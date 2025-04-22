@@ -1,5 +1,7 @@
-package com.example.delivery.entity;
+package com.example.delivery.domain.menu.entity;
 
+import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -31,7 +33,7 @@ public class Menu extends BaseEntity {
     public Menu() {
     }
 
-    public Menu(String menuName, String intro, Integer price, String status, Store store) {
+    public Menu(String menuName, String intro, Integer price, String status, com.example.delivery.domain.store.entity.Store store) {
         this.menuName = menuName;
         this.intro = intro;
         this.price = price;

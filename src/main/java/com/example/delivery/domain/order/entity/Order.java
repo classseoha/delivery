@@ -1,5 +1,8 @@
-package com.example.delivery.entity;
+package com.example.delivery.domain.order.entity;
 
+import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.store.entity.Store;
+import com.example.delivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -26,7 +29,7 @@ public class Order extends BaseEntity {
     public Order() {
     }
 
-    public Order(String status, User user, Store store) {
+    public Order(String status, com.example.delivery.domain.user.entity.User user, com.example.delivery.domain.store.entity.Store store) {
         this.status = status;
         this.user = user;
         this.store = store;

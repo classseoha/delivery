@@ -1,5 +1,7 @@
-package com.example.delivery.entity;
+package com.example.delivery.domain.store.entity;
 
+import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -36,7 +38,7 @@ public class Store extends BaseEntity {
     public Store() {
     }
 
-    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus, User user) {
+    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus, com.example.delivery.domain.user.entity.User user) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;

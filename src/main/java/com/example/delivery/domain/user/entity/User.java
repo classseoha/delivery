@@ -1,5 +1,6 @@
-package com.example.delivery.entity;
+package com.example.delivery.domain.user.entity;
 
+import com.example.delivery.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 

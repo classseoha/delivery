@@ -1,5 +1,8 @@
-package com.example.delivery.entity;
+package com.example.delivery.domain.review.entity;
 
+import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.user.entity.User;
+import com.example.delivery.domain.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -29,7 +32,7 @@ public class Review extends BaseEntity {
     public Review() {
     }
 
-    public Review(Integer rating, String content, User user, Order order) {
+    public Review(Integer rating, String content, com.example.delivery.domain.user.entity.User user, Order order) {
         this.rating = rating;
         this.content = content;
         this.user = user;

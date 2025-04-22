@@ -1,4 +1,4 @@
-package com.example.delivery.entity;
+package com.example.delivery.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
