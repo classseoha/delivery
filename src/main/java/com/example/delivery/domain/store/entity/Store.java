@@ -4,12 +4,14 @@ import com.example.delivery.common.entity.BaseEntity;
 import com.example.delivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "store")
 @Getter
+@NoArgsConstructor
 public class Store extends BaseEntity {
 
     @Id
@@ -28,22 +30,11 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private Long minAmount;
 
-    @Column(nullable = false)
-    private String storeStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StoreStatus storeStatus = StoreStatus.OPEN;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Store() {
-    }
-
-    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus, com.example.delivery.domain.user.entity.User user) {
-        this.storeName = storeName;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
-        this.minAmount = minAmount;
-        this.storeStatus = storeStatus;
-        this.user = user;
-    }
 }
