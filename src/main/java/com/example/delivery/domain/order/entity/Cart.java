@@ -1,16 +1,17 @@
 package com.example.delivery.domain.order.entity;
 
 import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.store.entity.Store;
 import com.example.delivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "order")
+@Table(name = "cart")
 @Getter
 @NoArgsConstructor
-public class Order extends BaseEntity {
+public class Cart extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +21,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false, unique = true)
-    private Cart cart;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private OrderStatus orderStatus = OrderStatus.REQUESTED;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 }
