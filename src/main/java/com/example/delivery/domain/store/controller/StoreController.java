@@ -25,18 +25,9 @@ public class StoreController {
         CreateResponseDto response = storeService.createStore(dto.getStoreName()
                 , dto.getOpeningTime()
                 , dto.getClosingTime()
-                , dto.getMinAmount()
-        );
+                , dto.getMinAmount());
 
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, response,request.getRequestURI()));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<GetStoreResponseDto>> findById(@PathVariable Long id,HttpServletRequest request) {
-
-        GetStoreResponseDto findById = storeService.findById(id);
-
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, findById,request.getRequestURI()));
     }
 
 

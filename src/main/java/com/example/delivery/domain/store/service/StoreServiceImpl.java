@@ -23,7 +23,6 @@ public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
 
-
     @Override //가게 오픈
     public CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
 
@@ -37,19 +36,6 @@ public class StoreServiceImpl implements StoreService {
                 , savedStore.getClosingTime()
                 , savedStore.getMinAmount()
                 , savedStore.getStoreStatus());
-    }
-
-    @Override //가게 단일 조회
-    public GetStoreResponseDto findById(Long id) {
-
-        Store findById = storeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        return new GetStoreResponseDto(findById.getId()
-                , findById.getStoreName()
-                , findById.getOpeningTime()
-                , findById.getClosingTime()
-                , findById.getMinAmount()
-                , findById.getStoreStatus());
     }
 
     @Override // 가게 전체 조회

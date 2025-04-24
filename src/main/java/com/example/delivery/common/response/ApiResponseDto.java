@@ -36,7 +36,6 @@ public record ApiResponseDto<T>(
                 .build();
     }
 
-
     /**
      * ✅ 성공 응답 (데이터 없음)
      */
@@ -45,10 +44,10 @@ public record ApiResponseDto<T>(
     }
 
 
-
     /**
      * ❌ 실패 응답 (ErrorCode 기반)
      */
+
     public static <T> ApiResponseDto<T> fail(final ErrorCode errorCode, final String path) {
         return ApiResponseDto.<T>builder()
                 .timestamp(LocalDateTime.now())
@@ -70,5 +69,6 @@ public record ApiResponseDto<T>(
                 .path(path)
                 .data(null)
                 .build();
+
     }
 }
