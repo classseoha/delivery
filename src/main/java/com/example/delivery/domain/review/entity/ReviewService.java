@@ -2,8 +2,10 @@ package com.example.delivery.domain.review.entity;
 
 
 import com.example.delivery.domain.order.entity.Order;
+import com.example.delivery.domain.order.entity.OrderRepository;
 import com.example.delivery.domain.order.entity.OrderStatus;
 import com.example.delivery.domain.store.entity.Store;
+import com.example.delivery.domain.store.entity.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +33,11 @@ public class ReviewService {
         if (!order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new IllegalStateException("배달 완료된 주문만 리뷰 작성이 가능합니다.");
         }
+        // 5. 리뷰 생성
         Review review = Review.create(order, order.getUser(), store, rating, content);
-
+        // 6. 레포지토리에 저장
         reviewRepository.save(review);
-
+        // 7. reviewId 반환
         return review.getId();
     }
 }

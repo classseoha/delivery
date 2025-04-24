@@ -1,6 +1,7 @@
 package com.example.delivery.domain.review.entity;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,15 @@ public class ReviewController {
     @PostMapping("/orders/{orderId}/reviews")
     public ResponseEntity<Long> createReview(
             @PathVariable Long orderId,
-            @RequestBody CreateReviewRequestDto requsetDto
+            @RequestBody @Valid CreateReviewRequestDto requestDto
     ){
 
         Long reviewId = reviewService.createReview(
-                requsetDto.getUserId(),
+                requestDto.getUserId(),
                 orderId,
-                requsetDto.getStoreId(),
-                requsetDto.getRating(),
-                requsetDto.getContent()
+                requestDto.getStoreId(),
+                requestDto.getRating(),
+                requestDto.getContent()
         );
        return ResponseEntity.status(HttpStatus.CREATED).body(reviewId);
     }
