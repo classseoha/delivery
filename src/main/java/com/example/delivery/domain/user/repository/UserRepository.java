@@ -15,9 +15,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 이메일로 유저 찾기 (활성 유저만)
     Optional<User> findByEmailAndIsActiveTrue(String email);
 
+    // ID로 유저 찾기 (활성 유저만)
+    Optional<User> findByIdAndIsActiveTrue(Long id);
+
     boolean existsByEmail(String email);
 
-    default User findByIdOrElseThrow(String email) {
-        return findByEmailAndIsActiveTrue(email).orElseThrow(() -> new EntityNotFoundException("해당 이메일의 유저가 존재하지 않습니다."));
+    default User findByIdOrElseThrow(Long id) {
+        return findByIdAndIsActiveTrue(id).orElseThrow(() -> new EntityNotFoundException("해당 ID의 유저가 존재하지 않습니다."));
     }
 }

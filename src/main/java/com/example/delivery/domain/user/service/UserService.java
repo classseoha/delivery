@@ -6,6 +6,7 @@ import com.example.delivery.domain.user.dto.UpdateUserRequestDto;
 import com.example.delivery.domain.user.entity.User;
 import com.example.delivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder; >> SecurityConfig 생성 후 사용
+    private final PasswordEncoder passwordEncoder;
 
     public SignUpResponseDto signUp(SignUpRequestDto requestDto) {
 
@@ -30,7 +31,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
-//        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
 
         User user = new User(requestDto.getEmail(), encodedPassword, requestDto.getAddress(), requestDto.getUserAuthority());
 
@@ -40,9 +41,9 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(String email, UpdateUserRequestDto requestDto) {
+    public void updateUser(Long userId, UpdateUserRequestDto requestDto) {
 
-        User user = userRepository.findByEmailAndIsActiveTrue(email)
+        User user = userRepository.findByIdAndIsActiveTrue(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         // 비밀번호 검증
@@ -76,19 +77,21 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String email, String password) {
+    public void deleteUser(Long userId, String password) {
 
-        User user = userRepository.findByEmailAndIsActiveTrue(email)
+        User user = userRepository.findByIdAndIsActiveTrue(userId)
                 .orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        User findUser = userRepository.findByIdOrElseThrow(email);
-
-        // 기존 비밀번호와 입력한 비밀번호가 다른지 확인
-        if(!passwordEncoder.matches(password, findUser.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
         // soft delete 처리
         user.deleteUser();
+    }
+
+    // 비밀번호 검증
+    public boolean checkPassword(String rawPassword, String encodedPassword){
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }
