@@ -5,6 +5,7 @@ import com.example.delivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -38,12 +39,19 @@ public class Store extends BaseEntity {
     public Store() {
     }
 
-    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus, com.example.delivery.domain.user.entity.User user) {
+    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.minAmount = minAmount;
         this.storeStatus = storeStatus;
-        this.user = user;
+    }
+
+    //가게 업데이트 메서드
+    public void update(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
+        this.storeName = storeName;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+        this.minAmount = minAmount;
     }
 }
