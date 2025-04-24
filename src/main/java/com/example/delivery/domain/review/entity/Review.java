@@ -22,10 +22,6 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
-
     @Column(nullable = false)
     private Integer rating;
 
