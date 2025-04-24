@@ -1,6 +1,7 @@
 package com.example.delivery.domain.menu.entity;
 
 import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
 import com.example.delivery.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,9 +30,17 @@ public class Menu extends BaseEntity {
     private String intro;
 
     @Column(nullable = false)
-    private Long price;
+    private Integer price;
 
     @Enumerated(EnumType.STRING)
     @Column(name ="status")
     private MenuStatus menuStatus = MenuStatus.ACTIVE;
+
+    public Menu(Store store, String menuName, String intro, Integer price) {
+        this.store = store;
+        this.menuName = menuName;
+        this.intro = intro;
+        this.price = price;
+    }
+
 }
