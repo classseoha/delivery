@@ -25,9 +25,9 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override //가게 오픈
-    public CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, StoreStatus storeStatus) {
+    public CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
 
-        Store store = new Store(storeName, openingTime, closingTime, minAmount, storeStatus);
+        Store store = new Store(storeName, openingTime, closingTime, minAmount);
 
         Store savedStore = storeRepository.save(store);
 

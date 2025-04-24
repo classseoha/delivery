@@ -1,5 +1,6 @@
 package com.example.delivery.domain.store.dto;
 
+import com.example.delivery.domain.store.entity.StoreStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -25,14 +26,10 @@ public class CreateRequestDto {
     @Positive // 숫자 필드가 양수인지를 검사합니다.
     private final Long minAmount;
 
-    @NotBlank
-    private final String storeStatus;
-
-    public CreateRequestDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus) {
+    public CreateRequestDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.minAmount = minAmount;
-        this.storeStatus = storeStatus;
     }
 }

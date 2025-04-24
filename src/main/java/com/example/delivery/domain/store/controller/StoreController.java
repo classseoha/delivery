@@ -1,6 +1,7 @@
 package com.example.delivery.domain.store.controller;
 
-import com.example.delivery.common.enums.SuccessCode;
+
+import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
 import com.example.delivery.domain.store.dto.*;
 import com.example.delivery.domain.store.service.StoreService;
@@ -24,7 +25,7 @@ public class StoreController {
                 , dto.getOpeningTime()
                 , dto.getClosingTime()
                 , dto.getMinAmount()
-                , dto.getStoreStatus());
+        );
 
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, response));
     }
