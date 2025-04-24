@@ -9,6 +9,8 @@ import com.example.delivery.domain.store.entity.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -40,4 +42,13 @@ public class ReviewService {
         // 7. reviewId 반환
         return review.getId();
     }
+
+    public List<ReviewResponseDto> getReviews(Long storeId, Integer minRating, Integer maxRating) {
+        return reviewRepository.findByStoreIdAndRatingBetweenOrderByCreatedAtDesc(storeId, minRating, maxRating)
+                .stream() // List<Review> → Stream<Review>
+                .map(ReviewResponseDto::from) // 각 Review 객체를 ReviewResponseDto로 변환
+                .toList(); // 다시 List로 수집
+    }
+
+
 }
