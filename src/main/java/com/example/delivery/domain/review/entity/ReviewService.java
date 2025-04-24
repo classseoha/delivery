@@ -25,14 +25,15 @@ public class ReviewService {
     public Long createReview(Long userId, Long orderId, Long storeId, Integer rating, String content) {
 
         // 1. 주문조회
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+        Order order = orderRepository.findByIdOrElseThrow(orderId);
+
         // 2. 가게조회
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+        Store store = storeRepository.findByIdOrElseThrow(storeId);
+
         // 3. 리뷰 작성 권한 확인
         if (!order.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.NO_PERMISSION);
+
         }
         // 4. 배달 상태 확인
         if (!order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
