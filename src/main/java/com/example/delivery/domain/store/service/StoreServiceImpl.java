@@ -4,6 +4,7 @@ import com.example.delivery.domain.store.dto.CreateResponseDto;
 import com.example.delivery.domain.store.dto.GetStoreResponseDto;
 import com.example.delivery.domain.store.dto.UpdateResponseDto;
 import com.example.delivery.domain.store.entity.Store;
+import com.example.delivery.domain.store.entity.StoreStatus;
 import com.example.delivery.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override //가게 오픈
-    public CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus) {
+    public CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, StoreStatus storeStatus) {
 
         Store store = new Store(storeName, openingTime, closingTime, minAmount, storeStatus);
 

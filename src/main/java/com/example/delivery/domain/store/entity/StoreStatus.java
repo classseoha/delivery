@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public enum StoreStatus {
     OPEN,
-    CLOSED
+    CLOSED,
+    DELETED
 }
