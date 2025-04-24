@@ -53,6 +53,7 @@ public class CartService {
 
         List<CartItem> cartItems = cartItemRepository.findByCart(cart);
 
-        return new CartDetailResponseDto(cart, cartItems);
+        return CartDetailResponseDto.from(cart, cartItems);
     }
+
 }

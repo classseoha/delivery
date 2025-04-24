@@ -1,16 +1,16 @@
 package com.example.delivery.domain.order.dto.Response;
 
 import com.example.delivery.domain.order.entity.CartItem;
-import lombok.Getter;
+import lombok.Value;
 
-@Getter
+@Value
 public class CartItemDetailResponseDto {
-    private Long menuId;
-    private String menuName;
-    private String intro;
-    private Long price;
-    private int quantity;
-    private Long totalPrice;
+    Long menuId;
+    String menuName;
+    String intro;
+    Long price;
+    int quantity;
+    Long totalPrice;
 
     public CartItemDetailResponseDto(CartItem item) {
         this.menuId = item.getMenu().getId();

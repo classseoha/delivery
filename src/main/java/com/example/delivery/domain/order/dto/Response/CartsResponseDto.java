@@ -2,15 +2,20 @@ package com.example.delivery.domain.order.dto.Response;
 
 import com.example.delivery.domain.order.entity.Cart;
 import com.example.delivery.domain.order.entity.CartItem;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CartsResponseDto {
-    private Long cartId;
-    private Long storeId;
-    private String storeName;
-    private String menuSummary; // 예: "불고기버거 외 2개"
-    private Long totalAmount;
+    private final Long cartId;
+    private final Long storeId;
+    private final String storeName;
+    private final String menuSummary; // 예: "불고기버거 외 2개"
+    private final Long totalAmount;
 
     // 장바구니에 담긴 메뉴 총 가격
     public CartsResponseDto(Cart cart, List<CartItem> cartItems) {
