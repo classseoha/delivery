@@ -12,6 +12,7 @@ public enum ErrorCode {
     BAD_REQUEST(400,HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MISSING_PARAMETER(400,HttpStatus.BAD_REQUEST, "필수 파라미터가 누락되었습니다."),
     INVALID_PARAMETER(400,HttpStatus.BAD_REQUEST, "유효하지 않은 요청 파라미터입니다."),
+    REVIEW_NOT_ALLOWED(400, HttpStatus.BAD_REQUEST, "배달 완료된 주문만 리뷰 작성이 가능합니다."),
 
     // 401
     UNAUTHORIZED(401,HttpStatus.UNAUTHORIZED, "인증되지 않은 유저입니다."),
@@ -26,7 +27,8 @@ public enum ErrorCode {
 
     // 404 - Not Found
     NOT_FOUND(404,HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
-
+    ORDER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 주문이 존재하지 않습니다."),
+    STORE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 가게가 존재하지 않습니다."),
     // 500 - 서버 내부 오류
     INTERNAL_SERVER_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     TEST_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "테스트 에러입니다.");

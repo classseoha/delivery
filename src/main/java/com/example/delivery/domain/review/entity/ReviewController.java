@@ -44,9 +44,7 @@ public class ReviewController {
             @RequestParam(defaultValue = "5") Integer maxRating,  // 쿼리 파라미터 - 최대 평점
             HttpServletRequest request
     ) {
-
         List<ReviewResponseDto> reviews = reviewService.getReviews(storeId, minRating, maxRating);
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_REVIEW_SUCESS,reviews,request.getRequestURI()));
     }
-
 }
