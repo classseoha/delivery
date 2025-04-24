@@ -2,6 +2,7 @@ package com.example.delivery.domain.menu.entity;
 
 import com.example.delivery.common.entity.BaseEntity;
 import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
+import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
 import com.example.delivery.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,9 @@ public class Menu extends BaseEntity {
         this.price = price;
     }
 
+    public void update(MenuUpdateRequestDto menuUpdateRequestDto) {
+        this.menuName = menuUpdateRequestDto.getMenuName();
+        this.intro = menuUpdateRequestDto.getIntro();
+        this.price = menuUpdateRequestDto.getPrice();
+    }
 }
