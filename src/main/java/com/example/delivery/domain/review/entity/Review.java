@@ -23,6 +23,10 @@ public class Review extends BaseEntity {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
@@ -32,7 +36,17 @@ public class Review extends BaseEntity {
     @Column(nullable = true, columnDefinition = "longtext")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    public Review(Order order, User user, Store store, Integer rating, String content) {
+        this.order = order;
+        this.user = user;
+        this.store = store;
+        this.rating = rating;
+        this.content = content;
+    }
+    //정적 팩토리 메서드
+    public static Review create(Order order, User user, Store store, Integer rating, String content) {
+        return new Review(order, user, store, rating, content);
+    }
+
+
 }
