@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface StoreService {
+
     CreateResponseDto createStore(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount);
 
     GetStoreResponseDto findById(Long id);

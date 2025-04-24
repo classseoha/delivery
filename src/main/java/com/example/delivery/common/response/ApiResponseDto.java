@@ -36,12 +36,15 @@ public record ApiResponseDto<T>(
                 .build();
     }
 
+
     /**
      * ✅ 성공 응답 (데이터 없음)
      */
     public static <T> ApiResponseDto<T> success(final SuccessCode successCode, final String path) {
         return success(successCode, null, path);
     }
+
+
 
     /**
      * ❌ 실패 응답 (ErrorCode 기반)
