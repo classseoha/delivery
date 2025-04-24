@@ -2,11 +2,13 @@ package com.example.delivery.domain.order.entity;
 
 import com.example.delivery.domain.menu.entity.Menu;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "cartitem")
 @NoArgsConstructor
+@Getter
 public class CartItem {
 
     @Id
@@ -23,4 +25,5 @@ public class CartItem {
 
     @Column(nullable = false)
     private int quantity;
+
 }
