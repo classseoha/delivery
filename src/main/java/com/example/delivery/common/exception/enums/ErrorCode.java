@@ -32,6 +32,7 @@ public enum ErrorCode {
     NO_PERMISSION(403,HttpStatus.FORBIDDEN, "권한이 없습니다."),
     ACCESS_DENIED_CART(403, HttpStatus.FORBIDDEN, "본인의 장바구니만 조회할 수 있습니다."),
     ALREADY_ORDERED(403, HttpStatus.FORBIDDEN, "이미 주문된 장바구니 입니다" ),
+    CART_ALREADY_EXISTS(403, HttpStatus.FORBIDDEN, "장바구니가 이미 존재합니다."),
 
     // 405 - 지원하지 않는 메서드
     METHOD_NOT_ALLOWED(405,HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 메소드입니다."),

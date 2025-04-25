@@ -62,6 +62,27 @@ public class CartController {
     }
 
     /**
+     * 장바구니 생성 API
+     *
+     * @param storeId            가게 ID (장바구니를 생성할 가게)
+     * @param httpServletRequest HttpServletRequest (요청 URI 정보)
+     * @return 장바구니 생성 결과
+     * @throws CustomException USER_NOT_FOUND, STORE_NOT_FOUND, CART_ALREADY_EXISTS
+     */
+    @PostMapping("/cart/{storeId}")
+    public ResponseEntity<ApiResponseDto<Void>> createCart(
+            @PathVariable Long storeId,
+            HttpServletRequest httpServletRequest) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(auth.getName());
+
+        cartService.createCart(userId, storeId);
+
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, null, httpServletRequest.getRequestURI()));
+    }
+
+    /**
      * 장바구니에 메뉴 담기 API
      *
      * @param storeId       가게 ID (어떤 가게에 메뉴를 담을지)
