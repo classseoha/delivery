@@ -1,14 +1,13 @@
 package com.example.delivery.domain.review.entity;
 
 
-import ch.qos.logback.core.spi.ErrorCodes;
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.order.entity.Order;
-import com.example.delivery.domain.order.entity.OrderRepository;
 import com.example.delivery.domain.order.entity.OrderStatus;
+import com.example.delivery.domain.order.repository.OrderRepository;
 import com.example.delivery.domain.store.entity.Store;
-import com.example.delivery.domain.store.entity.StoreRepository;
+import com.example.delivery.domain.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
