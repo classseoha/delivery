@@ -1,6 +1,8 @@
 package com.example.delivery.domain.review.entity;
 
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,14 +27,13 @@ public class ReviewController {
             @RequestBody @Valid CreateReviewRequestDto requestDto,
             HttpServletRequest request
     ) {
+        // URL에 입력된 orderId 값과 requestDto orderId 값 비교
+        if(!orderId.equals(requestDto.getOrderId())){
+            throw new CustomException(ErrorCode.NO_PERMISSION);
+        }
 
-        Long reviewId = reviewService.createReview(
-                requestDto.getUserId(),
-                orderId,
-                requestDto.getStoreId(),
-                requestDto.getRating(),
-                requestDto.getContent()
-        );
+        Long reviewId = reviewService.createReview(requestDto);
+
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_REVIEW,reviewId,request.getRequestURI()));
     }
 

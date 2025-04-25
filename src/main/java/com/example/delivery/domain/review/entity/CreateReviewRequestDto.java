@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 public class CreateReviewRequestDto {
 
+    private final Long orderId;
+
     private final Long userId;
 
     private final Long storeId;
@@ -18,7 +20,8 @@ public class CreateReviewRequestDto {
 
     private final String content;
 
-    public CreateReviewRequestDto(Long userId, Long storeId, Integer rating, String content) {
+    public CreateReviewRequestDto(Long orderId, Long userId, Long storeId, Integer rating, String content) {
+        this.orderId = orderId;
         this.userId = userId;
         this.storeId = storeId;
         this.rating = rating;
