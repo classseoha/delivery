@@ -1,7 +1,8 @@
 package com.example.delivery.domain.authentication.filter;
 
-import com.example.delivery.common.response.ApiResponseDto;
 import com.example.delivery.common.exception.enums.ErrorCode;
+import com.example.delivery.common.response.ApiResponseDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 변환기
 
     @Override
     public void handle(HttpServletRequest request,
@@ -28,6 +31,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(apiResponse.toString());  // ApiResponseDto를 JSON 형식으로 반환
+
+        // JSON으로 변환하여 응답
+        String jsonResponse = objectMapper.writeValueAsString(apiResponse);
+        response.getWriter().write(jsonResponse);
     }
 }

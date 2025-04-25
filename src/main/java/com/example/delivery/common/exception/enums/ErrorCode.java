@@ -22,6 +22,7 @@ public enum ErrorCode {
     LOGGED_OUT_TOKEN(401, HttpStatus.UNAUTHORIZED,  "로그아웃 된 토큰입니다."),
     INVALID_TOKEN(401, HttpStatus.UNAUTHORIZED,  "유효하지 않은 토큰입니다."),
     NON_EXISTENT_TOKEN(401, HttpStatus.UNAUTHORIZED,  "토큰이 존재하지 않습니다."),
+    ALREADY_DELETED_USER(401, HttpStatus.UNAUTHORIZED,  "이미 탈퇴한 사용자입니다."),
 
     // 403 - 권한 없음
     NO_PERMISSION(403,HttpStatus.FORBIDDEN, "권한이 없습니다."),
