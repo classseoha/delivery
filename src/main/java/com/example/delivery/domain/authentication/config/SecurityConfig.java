@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT는 세션을 사용하지 않는 인증 방식이기 때문에, STATELESS 설정을 통해 세션을 아예 사용하지 않음
                 .authorizeHttpRequests(auth -> auth // URL 별 인증 설정
                         .requestMatchers(HttpMethod.PATCH, "/delivery").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/delivery/signup").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/delivery/users/signup").permitAll()
                         .requestMatchers(HttpMethod.POST,"/delivery/auth/login").permitAll() // /authentication/** 로 시작하는 요청은 인증 없이 허용 (로그인/회원가입 등)
                         .requestMatchers(HttpMethod.POST,"/delivery/auth/logout").permitAll() // /authentication/** 로 시작하는 요청은 인증 없이 허용 (로그인/회원가입 등)
 

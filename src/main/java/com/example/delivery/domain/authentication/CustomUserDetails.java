@@ -31,7 +31,7 @@ public class CustomUserDetails implements UserDetails { // Spring Security에서
 
     @Override
     public String getUsername() { // 로그인 시 입력한 이메일/비밀번호가 DB의 정보와 일치하는지 비교하는 데 사용됨
-        return user.getEmail();
+        return String.valueOf(user.getId());
     }
 
     @Override
