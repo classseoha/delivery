@@ -1,6 +1,8 @@
 package com.example.delivery.domain.menu.entity;
 
 import com.example.delivery.common.entity.BaseEntity;
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
 import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
 import com.example.delivery.domain.store.entity.Store;
@@ -50,9 +52,13 @@ public class Menu extends BaseEntity {
         this.price = menuUpdateRequestDto.getPrice();
     }
 
-    public void changeStatus(MenuStatus chgStatus){
-        if(!(this.menuStatus == chgStatus)){
-            this.menuStatus = chgStatus;
+    public void changeStatus(){
+        if(this.menuStatus == MenuStatus.ACTIVE){
+            this.menuStatus = MenuStatus.DELETED;
+        }else if(this.menuStatus == MenuStatus.DELETED){
+            this.menuStatus = MenuStatus.ACTIVE;
+        }else{
+            throw new CustomException(ErrorCode.NOT_FOUND);
         }
     }
 }

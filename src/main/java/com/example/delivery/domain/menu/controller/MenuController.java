@@ -8,8 +8,11 @@ import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
 import com.example.delivery.domain.menu.dto.response.MenuResponseDto;
 import com.example.delivery.domain.menu.service.MenuService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +25,13 @@ public class MenuController {
 
     @PostMapping("/store/{storeId}/menus")
     public ResponseEntity<ApiResponseDto<MenuResponseDto>> save
-            (@PathVariable Long storeId,
-             @RequestBody MenuRequestDto menuRequestDto, HttpServletRequest request){
+            (Long userId, @PathVariable Long storeId,
+             @Valid @RequestBody MenuRequestDto menuRequestDto, HttpServletRequest request){
 
-        MenuResponseDto menuResponseDto = menuService.save(storeId, menuRequestDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userId = Long.parseLong(authentication.getName());
+
+        MenuResponseDto menuResponseDto = menuService.save(userId, storeId, menuRequestDto);
         return ResponseEntity.ok(ApiResponseDto.success
                                 (SuccessCode.CREATE_MENU_SUCCESS, menuResponseDto, request.getRequestURI()));
 
@@ -33,8 +39,8 @@ public class MenuController {
 
     @GetMapping("/menus")
     public ResponseEntity<ApiResponseDto<List<MenuResponseDto>>>
-                    findByStore(@PathVariable Long storeId, HttpServletRequest request){
-        List<MenuResponseDto> menuResponseDtoList = menuService.findByStore(storeId);
+                findByStore(@RequestBody MenuRequestDto menuRequestDto, HttpServletRequest request){
+        List<MenuResponseDto> menuResponseDtoList = menuService.findByStore(menuRequestDto.getStoreId());
         return ResponseEntity.ok(ApiResponseDto.success
                                 (SuccessCode.GET_MENU_SUCCESS, menuResponseDtoList, request.getRequestURI()));
 
@@ -42,16 +48,16 @@ public class MenuController {
 
     @GetMapping("/menus/{menuId}")
     public ResponseEntity<ApiResponseDto<MenuResponseDto>>
-                    findOne(@PathVariable Long menuId, HttpServletRequest request){
+                    findOne(@PathVariable Long menuId, @RequestParam Long storeId, HttpServletRequest request){
         return ResponseEntity.
                 ok(ApiResponseDto.success(SuccessCode.GET_ONE_MENU_SUCCESS,
-                        menuService.findOne(menuId), request.getRequestURI()));
+                        menuService.findOne(menuId, storeId), request.getRequestURI()));
     }
 
     @PutMapping("/store/menus/{menuId}")
     public ResponseEntity<ApiResponseDto<MenuResponseDto>>
                     update(Long userId, @PathVariable Long menuId,
-                           MenuUpdateRequestDto menuUpdateRequestDto ,HttpServletRequest request){
+                           @Valid @RequestBody MenuUpdateRequestDto menuUpdateRequestDto ,HttpServletRequest request){
 
         MenuResponseDto menuResponseDto = menuService.update(userId, menuId, menuUpdateRequestDto);
 
@@ -69,8 +75,7 @@ public class MenuController {
                              MenuStopRequestDto menuStopRequestDto, HttpServletRequest request){
 
         menuService.delete(menuId);
-
-        return ResponseEntity.ok(SuccessCode.DELETE_MENU_SUCCESS, menuStopRequestDto, request.getRequestURI());
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, null, request.getRequestURI()));
     }
 
 }

@@ -16,6 +16,8 @@ import com.example.delivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +30,16 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
 
+
+    /**
+     *
+     * @param storeId
+     * @param menuRequestDto
+     * @return
+     */
     @Transactional
-    public MenuResponseDto save(Long storeId, MenuRequestDto menuRequestDto){
-        User user = userRepository.findById(menuRequestDto.getUserId())
+    public MenuResponseDto save(Long userId, Long storeId, MenuRequestDto menuRequestDto){
+        User user = userRepository.findById(userId)
                             .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
         Store store = storeRepository.findById(storeId)
                             .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
@@ -62,12 +71,20 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public MenuResponseDto findOne(Long menuId) {
+    public MenuResponseDto findOne(Long menuId, @RequestParam Long storeId) {
+
+        Store store = storeRepository.findById(storeId)
+                        .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
         Menu menu = menuRepository.findById(menuId)
                         .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
 
-        return new MenuResponseDto(menu.getId(), menu.getStore().getId(), menu.getMenuName(),
-                                menu.getIntro(), menu.getPrice());
+        return MenuResponseDto.builder()
+                        .id(menu.getId())
+                        .storeId(storeId)
+                        .menuName(menu.getMenuName())
+                        .intro(menu.getIntro())
+                        .price(menu.getPrice())
+                        .build();
 
     }
 
@@ -91,9 +108,8 @@ public class MenuService {
         Menu menu = menuRepository.findById(menuId)
                             .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
 
-        // 삭제되지 않았을 경우
-        if(!menu.getMenuStatus() == MenuStatus.DELETED){
-            menu.change
-        }
+        //메뉴 상태 전환
+        menu.changeStatus();
+
     }
 }
