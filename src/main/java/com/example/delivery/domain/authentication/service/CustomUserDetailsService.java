@@ -33,5 +33,4 @@ public class CustomUserDetailsService implements UserDetailsService { // Spring 
         // 시큐리티가 이해할 수 있는 CustomUserDetails 객체 반환
         return new CustomUserDetails(user); // 직접 만든 UserDetails 구현체
     }
-
 }

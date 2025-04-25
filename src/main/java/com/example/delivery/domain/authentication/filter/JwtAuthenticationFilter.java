@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
     private final RedisTemplate<String, String> redisTemplate; // Redis 접근용 → 로그아웃된 토큰인지 확인
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, RedisTemplate<String, String> redisTemplate) {
+
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.redisTemplate = redisTemplate;
@@ -33,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+
         String path = request.getRequestURI();
         return path.equals("/authentication/login") || path.equals("/users/signup");
     }
