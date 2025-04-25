@@ -1,7 +1,8 @@
 package com.example.delivery.domain.user.repository;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.user.entity.User;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -21,6 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     default User findByIdOrElseThrow(Long id) {
-        return findByIdAndIsActiveTrue(id).orElseThrow(() -> new EntityNotFoundException("해당 ID의 유저가 존재하지 않습니다."));
+        return findByIdAndIsActiveTrue(id).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
     }
 }
