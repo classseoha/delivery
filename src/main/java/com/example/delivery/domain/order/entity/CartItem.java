@@ -26,4 +26,14 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
+    public CartItem(Cart cart, Menu menu, int quantity) {
+        this.cart = cart;
+        this.menu = menu;
+        this.quantity = quantity;
+    }
+
+    // 같은 메뉴를 담을 시 수량 증가
+    public void increaseQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

@@ -14,6 +14,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     // 특정 장바구니에 담긴 모든 메뉴 항목을 리스트로 반환
     List<CartItem> findByCart(Cart cart);
 
-    // 장바구니에 이미 담긴 메뉴인지 확인
-    Optional<CartItem> findByCartAndMenu(Cart cart, Menu menu);
+    // 이미 담긴 메뉴 확인
+    CartItem findByCartIdAndMenuId(Long cartId, Long menuId);
 }
