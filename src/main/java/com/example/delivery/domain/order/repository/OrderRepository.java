@@ -1,5 +1,7 @@
 package com.example.delivery.domain.order.repository;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.order.entity.Cart;
 import com.example.delivery.domain.order.entity.Order;
 import com.example.delivery.domain.user.entity.User;
@@ -18,4 +20,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // 주문 ID로 주문 조회
     Optional<Order> findById(Long orderId);
+
+    default Order findByIdOrElseThrow(Long id) {
+        return findById(id).orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+    }
 }
