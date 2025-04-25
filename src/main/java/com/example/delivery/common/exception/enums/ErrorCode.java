@@ -26,11 +26,17 @@ public enum ErrorCode {
 
     // 404 - Not Found
     NOT_FOUND(404,HttpStatus.NOT_FOUND, "존재하지 않는 API입니다."),
+    USER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+    CART_NOT_FOUND(404, HttpStatus.NOT_FOUND, "카트 목록을 찾을 수 없습니다."),
+    STORE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
+    MENU_NOT_FOUND(404, HttpStatus.NOT_FOUND, "메뉴를 찾을 수 없습니다."),
 
     // 500 - 서버 내부 오류
     INTERNAL_SERVER_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
-    TEST_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "테스트 에러입니다.");
+    TEST_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "테스트 에러입니다."),
 
+    // 주문
+    ACCESS_DENIED_CART(403, HttpStatus.FORBIDDEN, "본인의 장바구니만 조회할 수 있습니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
