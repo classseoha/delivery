@@ -9,6 +9,7 @@ import com.example.delivery.domain.order.dto.Response.Cart.CartsResponseDto;
 import com.example.delivery.domain.order.service.Cart.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +38,7 @@ public class CartController {
 
         List<CartsResponseDto> cartSummary = cartService.getMyCarts(userId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, cartSummary, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_CART_SUCCESS, cartSummary, httpServletRequest.getRequestURI()));
     }
 
     /**
@@ -58,7 +59,7 @@ public class CartController {
 
         CartDetailResponseDto cartDetail = cartService.getCartDetail(userId, cartId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, cartDetail, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_CART_SUCCESS, cartDetail, httpServletRequest.getRequestURI()));
     }
 
     /**
@@ -79,7 +80,7 @@ public class CartController {
 
         cartService.createCart(userId, storeId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, null, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_CART_SUCCESS, null, httpServletRequest.getRequestURI()));
     }
 
     /**
