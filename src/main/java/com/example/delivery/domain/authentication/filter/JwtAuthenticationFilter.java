@@ -1,5 +1,7 @@
 package com.example.delivery.domain.authentication.filter;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.authentication.JwtTokenProvider;
 import com.example.delivery.domain.authentication.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -7,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
     private final RedisTemplate<String, String> redisTemplate; // Redis 접근용 → 로그아웃된 토큰인지 확인
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, RedisTemplate<String, String> redisTemplate) {
+
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.redisTemplate = redisTemplate;
@@ -32,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+
         String path = request.getRequestURI();
         return path.equals("/authentication/login") || path.equals("/users/signup");
     }
@@ -52,12 +55,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
 
         // 로그아웃된 토큰인지 확인
         if (redisTemplate.hasKey(token)) {
-            throw new AuthenticationCredentialsNotFoundException("로그아웃된 토큰입니다.");
+            throw new CustomException(ErrorCode.LOGGED_OUT_TOKEN, "로그아웃 된 토큰입니다.");
         }
 
         // 유효성 검사 (토큰 만료 포함)
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new AuthenticationCredentialsNotFoundException("유효하지 않은 토큰입니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
         }
 
         // 토큰에서 이메일로 유저 정보를 찾아서 Authentication 객체를 생성 (서명 검증, 만료 체크 등 토큰이 올바른지 검사)
