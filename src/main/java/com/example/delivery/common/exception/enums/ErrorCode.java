@@ -17,6 +17,7 @@ public enum ErrorCode {
     NO_VALUE_CHANGED(400,HttpStatus.BAD_REQUEST, "변경된 값이 없습니다."),
     ORDER_CANNOT_BE_REJECTED(400, HttpStatus.BAD_REQUEST, "이 주문은 거절할 수 없습니다."),
     INVALID_ORDER_STATUS(400, HttpStatus.BAD_REQUEST, "주문 상태를 변경 할수 없는 상태입니다."),
+    REVIEW_NOT_ALLOWED(400, HttpStatus.BAD_REQUEST, "배달 완료된 주문만 리뷰 작성이 가능합니다."),
 
     // 401
     UNAUTHORIZED(401,HttpStatus.UNAUTHORIZED, "인증되지 않은 유저입니다."),
@@ -31,6 +32,7 @@ public enum ErrorCode {
     NO_PERMISSION(403,HttpStatus.FORBIDDEN, "권한이 없습니다."),
     ACCESS_DENIED_CART(403, HttpStatus.FORBIDDEN, "본인의 장바구니만 조회할 수 있습니다."),
     ALREADY_ORDERED(403, HttpStatus.FORBIDDEN, "이미 주문된 장바구니 입니다" ),
+    CART_ALREADY_EXISTS(403, HttpStatus.FORBIDDEN, "장바구니가 이미 존재합니다."),
 
     // 405 - 지원하지 않는 메서드
     METHOD_NOT_ALLOWED(405,HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 메소드입니다."),

@@ -62,6 +62,24 @@ public class CartService {
         return CartDetailResponseDto.from(cart, cartItems);
     }
 
+    // 장바구니 추가
+    @Transactional
+    public void createCart(Long userId, Long storeId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+        // 이미 장바구니가 존재하는 경우 예외 발생
+        if (cartRepository.findByUserAndStore(user, store).isPresent()) {
+            throw new CustomException(ErrorCode.CART_ALREADY_EXISTS);
+        }
+
+        Cart cart = new Cart(user, store);
+        cartRepository.save(cart);
+    }
+
     // 장바구니에 메뉴 수량을 더하거나 빼고, 수량이 0일 경우 메뉴 삭제
     @Transactional
     public void updateItemToCart(Long userId, Long storeId, CartItemRequestDto requestDto) {
