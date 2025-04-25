@@ -1,5 +1,7 @@
 package com.example.delivery.domain.authentication.service;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.authentication.CustomUserDetails;
 import com.example.delivery.domain.user.entity.User;
 import com.example.delivery.domain.user.repository.UserRepository;
@@ -26,10 +28,9 @@ public class CustomUserDetailsService implements UserDetailsService { // Spring 
 
     public UserDetails loadUserById(Long id) { // 로그인 시 시큐리티가 이 메서드 자동 호출함
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
         // 시큐리티가 이해할 수 있는 CustomUserDetails 객체 반환
         return new CustomUserDetails(user); // 직접 만든 UserDetails 구현체
     }
-
 }

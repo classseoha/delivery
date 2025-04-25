@@ -34,12 +34,13 @@ public class User extends BaseEntity {
     private boolean isActive = true;
 
     public User(String email, String password, String address, UserAuthority userAuthority) {
+
         this.email = email;
         this.password = password;
         this.address = address;
         this.userAuthority = userAuthority;
+        this.isActive = true;
     }
-
 
     public void updatePassword(String newPassword) {
 
