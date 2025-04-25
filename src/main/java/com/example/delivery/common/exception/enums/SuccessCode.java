@@ -12,7 +12,6 @@ public enum SuccessCode {
 
     CREATE_SUCCESS(200, HttpStatus.CREATED,"가게를 오픈하였습니다."),
     GET_SUCCESS(200, HttpStatus.OK, "가게를 조회하였습니다."),
-    GET_ONE_SUCCESS(200, HttpStatus.OK, "단일 가게를 조회하였습니다."),
     DELETE_SUCCESS(200, HttpStatus.OK, "가게 폐업완료하였습니다."),
     PUT_SUCCESS(200, HttpStatus.OK, "가게 정보 수정을 완료하였습니다."),
 
