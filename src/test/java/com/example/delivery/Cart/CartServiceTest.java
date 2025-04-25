@@ -7,7 +7,7 @@ import com.example.delivery.domain.order.entity.Cart;
 import com.example.delivery.domain.order.entity.CartItem;
 import com.example.delivery.domain.order.repository.CartItemRepository;
 import com.example.delivery.domain.order.repository.CartRepository;
-import com.example.delivery.domain.order.service.CartService;
+import com.example.delivery.domain.order.service.Cart.CartService;
 import com.example.delivery.domain.store.entity.Store;
 import com.example.delivery.domain.store.repository.StoreRepository;
 import com.example.delivery.domain.user.entity.User;

@@ -1,4 +1,4 @@
-package com.example.delivery.domain.order.dto.Response;
+package com.example.delivery.domain.order.dto.Response.Cart;
 
 import com.example.delivery.domain.order.entity.CartItem;
 import lombok.Value;

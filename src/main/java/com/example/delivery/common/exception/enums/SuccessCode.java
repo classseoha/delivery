@@ -13,7 +13,12 @@ public enum SuccessCode {
     GET_SUCCESS(200, HttpStatus.OK, "가게를 조회하였습니다."),
     GET_ONE_SUCCESS(200, HttpStatus.OK, "단일 가게를 조회하였습니다."),
     DELETE_SUCCESS(200, HttpStatus.OK, "가게 폐업완료하였습니다."),
-    ADD_ITEM_TO_CART_SUCCESS(200, HttpStatus.OK, "장바구니에 메뉴와 수량이 정상적으로 들어갔습니다.");
+
+    // 주문 기능 관련
+    ADD_ITEM_TO_CART_SUCCESS(200, HttpStatus.OK, "장바구니에 메뉴와 수량이 정상적으로 들어갔습니다."),
+    CREATE_ORDER_SUCCESS(200, HttpStatus.OK, "주문이 정상적으로 처리됬습니다."),
+    ORDER_STATUS_CHANGED(200, HttpStatus.OK, "주문 상태가 정상적으로 변경됬습니다."),
+    ORDER_REJECTED(200, HttpStatus.OK, "주문이 정상적으로 거절 상태로 변경됬습니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

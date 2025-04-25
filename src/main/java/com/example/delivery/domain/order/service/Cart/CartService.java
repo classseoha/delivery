@@ -1,11 +1,11 @@
-package com.example.delivery.domain.order.service;
+package com.example.delivery.domain.order.service.Cart;
 
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.domain.menu.entity.Menu;
 import com.example.delivery.domain.menu.repository.MenuRepository;
 import com.example.delivery.domain.order.dto.Request.CartItemRequestDto;
-import com.example.delivery.domain.order.dto.Response.CartDetailResponseDto;
-import com.example.delivery.domain.order.dto.Response.CartsResponseDto;
+import com.example.delivery.domain.order.dto.Response.Cart.CartDetailResponseDto;
+import com.example.delivery.domain.order.dto.Response.Cart.CartsResponseDto;
 import com.example.delivery.domain.order.entity.Cart;
 import com.example.delivery.domain.order.entity.CartItem;
 import com.example.delivery.domain.order.repository.CartItemRepository;
@@ -31,14 +31,12 @@ public class CartService {
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
 
-    // 유저가 가지고 있는 전체 장바구니 목록 조회
+    // 유저의 전체 장바구니 목록 조회
     @Transactional(readOnly = true)
     public List<CartsResponseDto> getMyCarts(Long userId) {
-        // userId로 User 엔티티를 조회해야 함
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
 
-        // 해당 유저가 가진 장바구니 목록 조회
         List<Cart> carts = cartRepository.findAllByUser(user);
 
         return carts.stream()
@@ -48,7 +46,6 @@ public class CartService {
                 })
                 .toList();
     }
-
 
     // 특정 카트의 상세 정보 조회
     @Transactional(readOnly = true)
@@ -65,6 +62,8 @@ public class CartService {
         return CartDetailResponseDto.from(cart, cartItems);
     }
 
+    // 장바구니에 메뉴 수량을 더하거나 빼고, 수량이 0일 경우 메뉴 삭제
+    @Transactional
     public void updateItemToCart(Long userId, Long storeId, CartItemRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -78,7 +77,7 @@ public class CartService {
         Menu menu = menuRepository.findById(requestDto.getMenuId())
                 .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
-        // 수량 +, - 적용 0에 도달할시 장바구니에서 메뉴 삭제
+        // 수량을 + 또는 - 적용하고, 0이 되면 해당 메뉴 삭제
         CartItem existingItem = cartItemRepository.findByCartIdAndMenuId(cart.getId(), menu.getId());
         if (existingItem != null) {
             existingItem.increaseQuantity(requestDto.getQuantity());
