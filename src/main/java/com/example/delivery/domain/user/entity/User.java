@@ -4,11 +4,13 @@ import com.example.delivery.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@Where(clause = "is_active = 1") // 해당 엔티티에 대한 모든 조회에서 자동으로 활성 유저만 조회하는 조건 추가
 public class User extends BaseEntity {
 
     @Id
@@ -25,13 +27,32 @@ public class User extends BaseEntity {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "authority")
+    @Column(name = "authority", nullable = false)
     private UserAuthority userAuthority = UserAuthority.USER;
 
-    @Column(name = "is_deleted", columnDefinition = "TINYINT(1) DEFAULT 1")
-    private boolean isDeleted = true;
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    private boolean isActive = true;
 
-    public void updatePassword(String password) {
+    public User(String email, String password, String address, UserAuthority userAuthority) {
+        this.email = email;
         this.password = password;
+        this.address = address;
+        this.userAuthority = userAuthority;
+    }
+
+
+    public void updatePassword(String newPassword) {
+
+        this.password = newPassword;
+    }
+
+    public void updateAddress(String newAddress) {
+
+        this.address = newAddress;
+    }
+
+    public void deleteUser() {
+
+        this.isActive = false;  // isDeleted가 false(0)일 때 탈퇴한 상태
     }
 }
