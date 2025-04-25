@@ -15,7 +15,7 @@ public enum ErrorCode {
     EXISTED_PARAMETER(400,HttpStatus.BAD_REQUEST, "이미 존재하는 데이터입니다."),
     NOT_CORRECT_VALUE(400,HttpStatus.BAD_REQUEST, "입력값이 올바르지 않습니다."),
     NO_VALUE_CHANGED(400,HttpStatus.BAD_REQUEST, "변경된 값이 없습니다."),
-
+    REVIEW_NOT_ALLOWED(400, HttpStatus.BAD_REQUEST, "배달 완료된 주문만 리뷰 작성이 가능합니다."),
     // 401
     UNAUTHORIZED(401,HttpStatus.UNAUTHORIZED, "인증되지 않은 유저입니다."),
     USER_NOT_REGISTERED(401, HttpStatus.UNAUTHORIZED,  "회원가입을 완료한 후 로그인해주세요."),
@@ -36,7 +36,7 @@ public enum ErrorCode {
     CART_NOT_FOUND(404, HttpStatus.NOT_FOUND, "카트 목록을 찾을 수 없습니다."),
     STORE_NOT_FOUND(404, HttpStatus.NOT_FOUND, "가게를 찾을 수 없습니다."),
     MENU_NOT_FOUND(404, HttpStatus.NOT_FOUND, "메뉴를 찾을 수 없습니다."),
-
+    ORDER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 주문이 존재하지 않습니다."),
     // 500 - 서버 내부 오류
     INTERNAL_SERVER_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     TEST_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR, "테스트 에러입니다."),
