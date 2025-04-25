@@ -8,9 +8,9 @@ public class CartItemDetailResponseDto {
     Long menuId;
     String menuName;
     String intro;
-    Long price;
-    int quantity;
-    Long totalPrice;
+    Integer price;
+    Integer quantity;
+    Integer totalPrice;
 
     public CartItemDetailResponseDto(CartItem item) {
         this.menuId = item.getMenu().getId();
