@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class ReviewController {
             @RequestBody @Valid CreateReviewRequestDto requestDto,
             HttpServletRequest request
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(authentication.getName());
         // URL에 입력된 orderId 값과 requestDto orderId 값 비교
         if(!orderId.equals(requestDto.getOrderId())){
             throw new CustomException(ErrorCode.NO_PERMISSION);
@@ -45,6 +49,9 @@ public class ReviewController {
             @RequestParam(defaultValue = "5") Integer maxRating,  // 쿼리 파라미터 - 최대 평점
             HttpServletRequest request
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(authentication.getName());
+
         List<ReviewResponseDto> reviews = reviewService.getReviews(storeId, minRating, maxRating);
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_REVIEW_SUCESS,reviews,request.getRequestURI()));
     }
