@@ -44,7 +44,7 @@ public class StoreController {
 
         List<GetStoreResponseDto> findAllStore = storeService.findAll();
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_ONE_SUCCESS, findAllStore,request.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, findAllStore,request.getRequestURI()));
     }
 
     @PutMapping("/stores/{id}") //가게 수정
@@ -56,7 +56,7 @@ public class StoreController {
                 , dto.getClosingTime()
                 , dto.getMinAmount());
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.DELETE_SUCCESS, updateResponseDto,request.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.PUT_SUCCESS, updateResponseDto,request.getRequestURI()));
     }
 
     @DeleteMapping("/stores/{id}") // 가게 뿌시기
