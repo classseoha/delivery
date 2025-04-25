@@ -44,10 +44,6 @@ class CartServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private User testUser;
-    private Store testStore;
-    private Menu testMenu;
-
     @Test
     public void testAddMultipleItemsToCart() {
         // Arrange
