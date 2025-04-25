@@ -38,6 +38,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.address = address;
         this.userAuthority = userAuthority;
+        this.isActive = true;
     }
 
 
