@@ -43,9 +43,11 @@ public record ApiResponseDto<T>(
         return success(successCode, null, path);
     }
 
+
     /**
      * ❌ 실패 응답 (ErrorCode 기반)
      */
+
     public static <T> ApiResponseDto<T> fail(final ErrorCode errorCode, final String path) {
         return ApiResponseDto.<T>builder()
                 .timestamp(LocalDateTime.now())
@@ -67,5 +69,6 @@ public record ApiResponseDto<T>(
                 .path(path)
                 .data(null)
                 .build();
+
     }
 }

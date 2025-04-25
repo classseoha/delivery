@@ -84,6 +84,11 @@ public class UserService {
         User user = userRepository.findByIdAndIsActiveTrue(userId)
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
+        // 탈퇴한 사용자인지 체크
+        if (!user.isActive()) {
+            throw new CustomException(ErrorCode.ALREADY_DELETED_USER, "이미 탈퇴한 사용자입니다.");
+        }
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.NOT_CORRECT_VALUE, "비밀번호가 일치하지 않습니다.");
         }

@@ -2,6 +2,8 @@ package com.example.delivery.domain.authentication.controller;
 
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.common.exception.enums.ErrorCode;
+import com.example.delivery.common.exception.enums.SuccessCode;
+import com.example.delivery.common.response.ApiResponseDto;
 import com.example.delivery.domain.authentication.JwtTokenProvider;
 import com.example.delivery.domain.authentication.dto.LoginRequestDto;
 import com.example.delivery.domain.authentication.dto.LoginResponseDto;
@@ -62,7 +64,7 @@ public class AuthenticationController { // 로그인, 로그아웃 요청 처리
 
     // 로그아웃 API
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<ApiResponseDto<Void>> logout(HttpServletRequest request) {
 
         String token = jwtTokenProvider.resolveToken(request); // Authorization 헤더에서 토큰을 꺼냄 (resolveToken)
 
@@ -88,6 +90,6 @@ public class AuthenticationController { // 로그인, 로그아웃 요청 처리
         long expiration = jwtTokenProvider.getExpiration(token); // 토큰 만료 시간
         redisTemplate.opsForValue().set(token, "logout", expiration, TimeUnit.MILLISECONDS); // 블랙리스트 등록
 
-        return ResponseEntity.ok("로그아웃 성공");
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.LOGOUT_SUCCESS, null, request.getRequestURI()));
     }
 }

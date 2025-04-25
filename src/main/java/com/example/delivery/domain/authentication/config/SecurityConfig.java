@@ -28,13 +28,15 @@ public class SecurityConfig {
     private final RedisTemplate<String, String> redisTemplate; // 로그아웃한 토큰을 Redis에 저장하거나 조회할 때 사용
     private final PasswordEncoder passwordEncoder;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;  // AccessDeniedHandler 주입
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, RedisTemplate<String, String> redisTemplate, PasswordEncoder passwordEncoder, CustomAccessDeniedHandler customAccessDeniedHandler) {
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, RedisTemplate<String, String> redisTemplate, PasswordEncoder passwordEncoder, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.redisTemplate = redisTemplate;
         this.passwordEncoder = passwordEncoder;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     // SecurityFilterChain → Spring Security에서 필터 체인을 정의하는 방식
@@ -61,7 +63,7 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // 로그인x 일 경우 발동
+                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 로그인x 일 경우 발동
                         .accessDeniedHandler(customAccessDeniedHandler) // 로그인o, 권한x 일 경우 발동
                 )
                 .addFilterBefore(

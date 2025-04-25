@@ -1,12 +1,12 @@
-package com.example.delivery.domain.order.controller;
+package com.example.delivery.domain.order.controller.Cart;
 
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
 import com.example.delivery.domain.order.dto.Request.CartItemRequestDto;
-import com.example.delivery.domain.order.dto.Response.CartDetailResponseDto;
-import com.example.delivery.domain.order.dto.Response.CartsResponseDto;
-import com.example.delivery.domain.order.service.CartService;
+import com.example.delivery.domain.order.dto.Response.Cart.CartDetailResponseDto;
+import com.example.delivery.domain.order.dto.Response.Cart.CartsResponseDto;
+import com.example.delivery.domain.order.service.Cart.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +71,7 @@ public class CartController {
      * @throws CustomException USER_NOT_FOUND, STORE_NOT_FOUND, MENU_NOT_FOUND, INVALID_PARAMETER
      */
     @PostMapping("/cart/{storeId}/items")
-    public ResponseEntity<ApiResponseDto<Void>> addItemToCart(
+    public ResponseEntity<ApiResponseDto<Void>> updateItemToCart(
             @PathVariable Long storeId,
             @RequestBody CartItemRequestDto requestDto,
             HttpServletRequest httpServletRequest) {
