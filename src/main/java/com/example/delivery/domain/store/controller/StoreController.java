@@ -8,6 +8,9 @@ import com.example.delivery.domain.store.service.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,21 +20,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreController {
 
+    // Spring Security가 관리하는 인증 정보(Authentication)를 가져오고 인증정보에서 현재 로그인한 사용자 이름을 꺼냄
+    //시큐리티 적용사항이니 모든 컨트롤러 메서드 내부에 적용시키시면 됩니다.
+
+
+
     private final StoreService storeService;
 
     @PostMapping("/stores")
-    public ResponseEntity<ApiResponseDto<CreateResponseDto>> createStore(@RequestBody CreateRequestDto dto, HttpServletRequest request) {
+    public ResponseEntity<ApiResponseDto<CreateResponseDto>> createStore( @RequestBody CreateRequestDto dto, HttpServletRequest request) {
 
         CreateResponseDto response = storeService.createStore(dto.getStoreName()
                 , dto.getOpeningTime()
                 , dto.getClosingTime()
                 , dto.getMinAmount());
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, response,request.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_SUCCESS, response, request.getRequestURI()));
     }
 
 
-    @GetMapping() //전체 조회
+    @GetMapping("storelist") //전체 조회
     public ResponseEntity<ApiResponseDto<List<GetStoreResponseDto>>> findAll(HttpServletRequest request) {
 
         List<GetStoreResponseDto> findAllStore = storeService.findAll();
@@ -39,7 +47,7 @@ public class StoreController {
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_ONE_SUCCESS, findAllStore,request.getRequestURI()));
     }
 
-    @PutMapping("/{id}") //가게 수정
+    @PutMapping("/stores/{id}") //가게 수정
     public ResponseEntity<ApiResponseDto<UpdateResponseDto>> updateStore(@PathVariable Long id, @RequestBody UpdateRequestDto dto,HttpServletRequest request) {
 
         UpdateResponseDto updateResponseDto = storeService.updateStore(id
@@ -51,7 +59,7 @@ public class StoreController {
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.DELETE_SUCCESS, updateResponseDto,request.getRequestURI()));
     }
 
-    @DeleteMapping("/{id}") // 가게 뿌시기
+    @DeleteMapping("/stores/{id}") // 가게 뿌시기
     public ResponseEntity<ApiResponseDto<Void>> deleteStore(@PathVariable Long id) {
 
         storeService.deleteStore(id);

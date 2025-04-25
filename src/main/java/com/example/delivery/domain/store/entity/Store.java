@@ -39,11 +39,13 @@ public class Store extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
+
+    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount,User user) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.minAmount = minAmount;
+        this.user = user;
     }
 
     //가게 업데이트 메서드

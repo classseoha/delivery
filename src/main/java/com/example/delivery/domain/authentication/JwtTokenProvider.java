@@ -30,6 +30,7 @@ public class JwtTokenProvider {
 
         Date now = new Date(); // 현재시간
 
+
         return Jwts.builder()
                 .setSubject(String.valueOf(userId)) // JWT payload에 들어갈 내용
                 .setIssuedAt(now) // 발급 시간
