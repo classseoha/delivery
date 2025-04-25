@@ -71,7 +71,7 @@ public class CartController {
      * @throws CustomException USER_NOT_FOUND, STORE_NOT_FOUND, MENU_NOT_FOUND, INVALID_PARAMETER
      */
     @PostMapping("/cart/{storeId}/items")
-    public ResponseEntity<ApiResponseDto<Void>> addItemToCart(
+    public ResponseEntity<ApiResponseDto<Void>> updateItemToCart(
             @PathVariable Long storeId,
             @RequestBody CartItemRequestDto requestDto,
             HttpServletRequest httpServletRequest) {
