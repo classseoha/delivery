@@ -22,7 +22,11 @@ public enum SuccessCode {
     GET_MENU_SUCCESS(200, HttpStatus.OK, "메뉴 목록을 조회하였습니다."),
     GET_ONE_MENU_SUCCESS(200, HttpStatus.OK, "단일 메뉴를 조회하였습니다."),
     UPDATE_MENU_SUCCESS(200, HttpStatus.OK, "단일 메뉴를 수정하였습니다."),
-    DELETE_MENU_SUCCESS(200, HttpStatus.OK, "메뉴 상태 변경 완료하였습니다.");
+    DELETE_MENU_SUCCESS(200, HttpStatus.OK, "메뉴 상태 변경 완료하였습니다."),
+
+    //리뷰
+    CREATE_REVIEW(200,HttpStatus.CREATED,"리뷰가 생성되었습니다,"),
+    GET_REVIEW_SUCESS(200,HttpStatus.OK,"리뷰가 조회되었습니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
