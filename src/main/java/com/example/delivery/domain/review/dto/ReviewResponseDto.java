@@ -1,5 +1,6 @@
-package com.example.delivery.domain.review.entity;
+package com.example.delivery.domain.review.dto;
 
+import com.example.delivery.domain.review.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
