@@ -8,10 +8,6 @@ import lombok.Getter;
 @Getter
 public class CreateReviewRequestDto {
 
-    private final Long orderId;
-
-    private final Long userId;
-
     private final Long storeId;
 
     @Min(value = 1,message = "평점은 1점 이상이어야 합니다.")
@@ -20,9 +16,7 @@ public class CreateReviewRequestDto {
 
     private final String content;
 
-    public CreateReviewRequestDto(Long orderId, Long userId, Long storeId, Integer rating, String content) {
-        this.orderId = orderId;
-        this.userId = userId;
+    public CreateReviewRequestDto(Long storeId, Integer rating, String content) {
         this.storeId = storeId;
         this.rating = rating;
         this.content = content;

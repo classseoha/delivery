@@ -21,28 +21,24 @@ public class ReviewService {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
 
-    public Long createReview(CreateReviewRequestDto requestDto) {
+    public Long createReview(Long orderId, CreateReviewRequestDto requestDto) {
 
         // 1. 주문조회
-        Order order = orderRepository.findByIdOrElseThrow(requestDto.getOrderId());
+        Order order = orderRepository.findByIdOrElseThrow(orderId);
 
         // 2. 가게조회
         Store store = storeRepository.findByIdOrElseThrow(requestDto.getStoreId());
 
-        // 3. 리뷰 작성 권한 확인
-        if (!order.getUser().getId().equals(requestDto.getUserId())) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
 
-        }
-        // 4. 배달 상태 확인
+        // 3. 배달 상태 확인
         if (!order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new CustomException(ErrorCode.REVIEW_NOT_ALLOWED);
         }
-        // 5. 리뷰 생성
+        // 4. 리뷰 생성
         Review review = Review.create(order, order.getUser(), store, requestDto.getRating(), requestDto.getContent());
-        // 6. 레포지토리에 저장
+        // 5. 레포지토리에 저장
         reviewRepository.save(review);
-        // 7. reviewId 반환
+        // 6. reviewId 반환
         return review.getId();
     }
 
