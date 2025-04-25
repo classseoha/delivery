@@ -1,6 +1,7 @@
 package com.example.delivery.domain.menu.service;
 
 import com.example.delivery.common.exception.base.NotFoundException;
+import com.example.delivery.common.exception.base.UnauthorizedException;
 import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
 import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,25 +91,31 @@ public class MenuService {
 
     }
 
-
+    @Transactional
     public MenuResponseDto update(Long userId, Long menuId, MenuUpdateRequestDto menuUpdateRequestDto) {
         Menu menu = menuRepository.findById(menuId)
                                 .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
 
-        // 본인 가게일 경우
-        if(menu.getStore().getUser().equals(userId)){
-            menu.update(menuUpdateRequestDto);
+        // 본인 가게가 아닐 경우
+        if(!menu.getStore().getUser().getId().equals(userId)){
+            throw new UnauthorizedException("메뉴 수정 권한이 없습니다.");
         }
+        menu.update(menuUpdateRequestDto);
 
         return new MenuResponseDto(menu.getId(), menu.getStore().getId(), menu.getMenuName(),
                 menu.getIntro(), menu.getPrice());
-        
+
     }
 
-    public void delete(Long menuId) {
+    public void delete(Long userId, Long menuId) {
 
         Menu menu = menuRepository.findById(menuId)
                             .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+
+        // 본인 가게가 아닐 경우
+        if(!menu.getStore().getUser().getId().equals(userId)){
+            throw new UnauthorizedException("메뉴 삭제 권한이 없습니다.");
+        }
 
         //메뉴 상태 전환
         menu.changeStatus();

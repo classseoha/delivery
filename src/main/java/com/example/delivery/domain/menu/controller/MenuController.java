@@ -25,11 +25,11 @@ public class MenuController {
 
     @PostMapping("/store/{storeId}/menus")
     public ResponseEntity<ApiResponseDto<MenuResponseDto>> save
-            (Long userId, @PathVariable Long storeId,
+            (@PathVariable Long storeId,
              @Valid @RequestBody MenuRequestDto menuRequestDto, HttpServletRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userId = Long.parseLong(authentication.getName());
+        Long userId = Long.parseLong(authentication.getName());
 
         MenuResponseDto menuResponseDto = menuService.save(userId, storeId, menuRequestDto);
         return ResponseEntity.ok(ApiResponseDto.success
@@ -56,9 +56,11 @@ public class MenuController {
 
     @PutMapping("/store/menus/{menuId}")
     public ResponseEntity<ApiResponseDto<MenuResponseDto>>
-                    update(Long userId, @PathVariable Long menuId,
+                    update(@PathVariable Long menuId,
                            @Valid @RequestBody MenuUpdateRequestDto menuUpdateRequestDto ,HttpServletRequest request){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(authentication.getName());
         MenuResponseDto menuResponseDto = menuService.update(userId, menuId, menuUpdateRequestDto);
 
         return ResponseEntity.
@@ -69,12 +71,17 @@ public class MenuController {
 
     // DeleteMapping과 PutMapping 사이의 차이.
     // DeleteMapping이 좀 더 RESTful 하다는 의견.
-    @DeleteMapping("/store/menus/stop/{menuId}")
+    @DeleteMapping("/store/stop/menus/{menuId}")
     public ResponseEntity<ApiResponseDto<Void>>
-                    stopMenu(Long userId, @PathVariable Long menuId,
-                             MenuStopRequestDto menuStopRequestDto, HttpServletRequest request){
+                    stopMenu(@PathVariable Long menuId, HttpServletRequest request){
 
-        menuService.delete(menuId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(authentication.getName());
+
+        System.out.println(userId);
+
+
+        menuService.delete(userId, menuId);
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, null, request.getRequestURI()));
     }
 
