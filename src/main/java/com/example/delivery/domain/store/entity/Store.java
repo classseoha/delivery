@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -37,4 +38,21 @@ public class Store extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+
+    public Store(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount,User user) {
+        this.storeName = storeName;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+        this.minAmount = minAmount;
+        this.user = user;
+    }
+
+    //가게 업데이트 메서드
+    public void update(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
+        this.storeName = storeName;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+        this.minAmount = minAmount;
+    }
 }

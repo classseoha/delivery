@@ -13,6 +13,7 @@ public class CustomUserDetails implements UserDetails { // Spring Security에서
     private final User user;
 
     public CustomUserDetails(User user) { // User 엔티티의 모든 것 포함 (로그인 시 DB에서 찾은 User 객체를 받아 UserDetails로 래핑하는 역할)
+
         this.user = user;
     }
 
@@ -26,35 +27,42 @@ public class CustomUserDetails implements UserDetails { // Spring Security에서
 
     @Override
     public String getPassword() { // 로그인 시 입력한 이메일/비밀번호가 DB의 정보와 일치하는지 비교하는 데 사용됨
+
         return user.getPassword();
     }
 
     @Override
     public String getUsername() { // 로그인 시 입력한 이메일/비밀번호가 DB의 정보와 일치하는지 비교하는 데 사용됨
+
         return String.valueOf(user.getId());
     }
 
     @Override
     public boolean isAccountNonExpired() { // 계정 만료x
+
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() { // 계정 잠김x
+
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() { // 비밀번호 만료x
+
         return true;
     }
 
     @Override
     public boolean isEnabled() {
+
         return user.isActive(); // 비활성 유저 로그인 못하게
     }
 
     public User getUser() { // 필요한 경우 원래 User 엔티티를 다시 꺼낼 수 있게 함 (ex. 로그인한 유저 정보를 컨트롤러에서 조회할 때)
+
         return user;
     }
 }
