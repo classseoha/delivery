@@ -24,9 +24,4 @@ public class Cart extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
-
-    public Cart(User user, Store store) {
-        this.user = user;
-        this.store = store;
-    }
 }
