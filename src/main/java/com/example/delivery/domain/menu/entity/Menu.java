@@ -49,4 +49,10 @@ public class Menu extends BaseEntity {
         this.intro = menuUpdateRequestDto.getIntro();
         this.price = menuUpdateRequestDto.getPrice();
     }
+
+    public void changeStatus(MenuStatus chgStatus){
+        if(!(this.menuStatus == chgStatus)){
+            this.menuStatus = chgStatus;
+        }
+    }
 }

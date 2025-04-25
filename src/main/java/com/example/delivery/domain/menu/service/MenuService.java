@@ -6,6 +6,7 @@ import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
 import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
 import com.example.delivery.domain.menu.dto.response.MenuResponseDto;
 import com.example.delivery.domain.menu.entity.Menu;
+import com.example.delivery.domain.menu.entity.MenuStatus;
 import com.example.delivery.domain.menu.repository.MenuRepository;
 import com.example.delivery.domain.store.entity.Store;
 import com.example.delivery.domain.store.repository.StoreRepository;
@@ -85,4 +86,14 @@ public class MenuService {
         
     }
 
+    public void delete(Long menuId) {
+
+        Menu menu = menuRepository.findById(menuId)
+                            .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+
+        // 삭제되지 않았을 경우
+        if(!menu.getMenuStatus() == MenuStatus.DELETED){
+            menu.change
+        }
+    }
 }

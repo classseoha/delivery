@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MenustopRequestDto {
+public class MenuStopRequestDto {
 
     private final MenuStatus menuStatus;
 
