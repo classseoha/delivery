@@ -71,7 +71,7 @@ public class CartController {
      * @throws CustomException USER_NOT_FOUND, STORE_NOT_FOUND, MENU_NOT_FOUND, INVALID_PARAMETER
      */
     @PostMapping("/cart/{storeId}/items")
-    public ResponseEntity<ApiResponseDto<Void>> updateItemToCart(
+    public ResponseEntity<ApiResponseDto<Void>> addItemToCart(
             @PathVariable Long storeId,
             @RequestBody CartItemRequestDto requestDto,
             HttpServletRequest httpServletRequest) {
@@ -79,7 +79,7 @@ public class CartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(authentication.getName());
 
-        cartService.updateItemToCart(userId, storeId, requestDto);
+        cartService.addItemToCart(userId, storeId, requestDto);
 
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.ADD_ITEM_TO_CART_SUCCESS, null, httpServletRequest.getRequestURI()));
     }
