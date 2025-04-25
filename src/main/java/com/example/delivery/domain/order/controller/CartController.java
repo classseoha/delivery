@@ -79,7 +79,7 @@ public class CartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(authentication.getName());
 
-        cartService.addItemToCart(userId, storeId, requestDto);
+        cartService.updateItemToCart(userId, storeId, requestDto);
 
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.ADD_ITEM_TO_CART_SUCCESS, null, httpServletRequest.getRequestURI()));
     }

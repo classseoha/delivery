@@ -65,7 +65,7 @@ public class CartService {
         return CartDetailResponseDto.from(cart, cartItems);
     }
 
-    public void addItemToCart(Long userId, Long storeId, CartItemRequestDto requestDto) {
+    public void updateItemToCart(Long userId, Long storeId, CartItemRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -78,10 +78,13 @@ public class CartService {
         Menu menu = menuRepository.findById(requestDto.getMenuId())
                 .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
-        // 이미 해당 메뉴가 장바구니에 있는 경우 수량 증가
+        // 수량 +, - 적용 0에 도달할시 장바구니에서 메뉴 삭제
         CartItem existingItem = cartItemRepository.findByCartIdAndMenuId(cart.getId(), menu.getId());
         if (existingItem != null) {
             existingItem.increaseQuantity(requestDto.getQuantity());
+            if (existingItem.getQuantity() <= 0) {
+                cartItemRepository.delete(existingItem);
+            }
         } else {
             CartItem cartItem = new CartItem(cart, menu, requestDto.getQuantity());
             cartItemRepository.save(cartItem);
