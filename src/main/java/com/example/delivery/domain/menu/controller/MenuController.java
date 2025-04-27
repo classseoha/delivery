@@ -6,6 +6,8 @@ import com.example.delivery.domain.menu.dto.request.MenuRequestDto;
 import com.example.delivery.domain.menu.dto.request.MenuStopRequestDto;
 import com.example.delivery.domain.menu.dto.request.MenuUpdateRequestDto;
 import com.example.delivery.domain.menu.dto.response.MenuResponseDto;
+import com.example.delivery.domain.menu.entity.Menu;
+import com.example.delivery.domain.menu.entity.MenuStatus;
 import com.example.delivery.domain.menu.service.MenuService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -72,7 +74,7 @@ public class MenuController {
     // DeleteMapping과 PutMapping 사이의 차이.
     // DeleteMapping이 좀 더 RESTful 하다는 의견.
     @DeleteMapping("/store/stop/menus/{menuId}")
-    public ResponseEntity<ApiResponseDto<Void>>
+    public ResponseEntity<ApiResponseDto<MenuStatus>>
                     stopMenu(@PathVariable Long menuId, HttpServletRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,7 +84,8 @@ public class MenuController {
 
 
         menuService.delete(userId, menuId);
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, null, request.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_MENU_SUCCESS, null, request.getRequestURI()));
+
     }
 
 }

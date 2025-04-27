@@ -60,7 +60,11 @@ public class Menu extends BaseEntity {
         }else if(this.menuStatus == MenuStatus.DELETED){
             this.menuStatus = MenuStatus.ACTIVE;
         }else{
-            throw new CustomException(ErrorCode.NOT_FOUND);
+            throw new CustomException(ErrorCode.MENU_NOT_FOUND);
         }
+    }
+
+    public void setStore(Store store) {
+        
     }
 }
