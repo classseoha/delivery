@@ -43,9 +43,9 @@ public class MenuService {
     @Transactional
     public MenuResponseDto save(Long userId, Long storeId, MenuRequestDto menuRequestDto){
         User user = userRepository.findById(userId)
-                            .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+                            .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
         Store store = storeRepository.findById(storeId)
-                            .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+                            .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
         Menu menu = new Menu(store, menuRequestDto.getMenuName(),
                              menuRequestDto.getIntro(), menuRequestDto.getPrice());
 
@@ -60,8 +60,9 @@ public class MenuService {
 
     @Transactional(readOnly = true)
     public List<MenuResponseDto> findByStore(Long storeId){
-        List<Menu> menus = menuRepository.findByStoreId(storeId)
-                            .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
+        List<Menu> menus = menuRepository.findByStoreIdAndMenuStatus(storeId, MenuStatus.ACTIVE)
+                            .orElseThrow(() -> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
+
 
         return menus.stream()
                 .map(menu -> new MenuResponseDto(
@@ -77,9 +78,9 @@ public class MenuService {
     public MenuResponseDto findOne(Long menuId, @RequestParam Long storeId) {
 
         Store store = storeRepository.findById(storeId)
-                        .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
-        Menu menu = menuRepository.findById(menuId)
-                        .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
+                        .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
+        Menu menu = menuRepository.findByIdAndMenuStatus(menuId, MenuStatus.ACTIVE)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
 
         return MenuResponseDto.builder()
                         .id(menu.getId())
@@ -94,7 +95,7 @@ public class MenuService {
     @Transactional
     public MenuResponseDto update(Long userId, Long menuId, MenuUpdateRequestDto menuUpdateRequestDto) {
         Menu menu = menuRepository.findById(menuId)
-                                .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+                                .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
 
         // 본인 가게가 아닐 경우
         if(!menu.getStore().getUser().getId().equals(userId)){
@@ -107,10 +108,11 @@ public class MenuService {
 
     }
 
+    @Transactional
     public void delete(Long userId, Long menuId) {
 
         Menu menu = menuRepository.findById(menuId)
-                            .orElseThrow(()-> new NotFoundException(ErrorCode.NOT_FOUND));
+                            .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));
 
         // 본인 가게가 아닐 경우
         if(!menu.getStore().getUser().getId().equals(userId)){
