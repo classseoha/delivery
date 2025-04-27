@@ -37,7 +37,7 @@ public class OrderController {
 
         List<OrderResponseDto> orderSummary = orderService.getMyOrders(userId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, orderSummary, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_ORDER_SUCCESS, orderSummary, httpServletRequest.getRequestURI()));
     }
 
     /**
@@ -58,7 +58,7 @@ public class OrderController {
 
         OrderDetailResponseDto orderDetail = orderService.getOrderDetail(userId, orderId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, orderDetail, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_ORDER_SUCCESS, orderDetail, httpServletRequest.getRequestURI()));
     }
 
     /**
