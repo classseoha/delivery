@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/delivery/orders")
+@RequestMapping("/delivery/store/orders")
 @RequiredArgsConstructor
 public class StoreOrderController {
 
