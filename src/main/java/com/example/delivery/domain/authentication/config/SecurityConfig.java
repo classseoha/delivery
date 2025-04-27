@@ -52,15 +52,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/delivery/users/signup").permitAll()
                         .requestMatchers(HttpMethod.POST,"/delivery/auth/login").permitAll() // /authentication/** 로 시작하는 요청은 인증 없이 허용 (로그인/회원가입 등)
                         .requestMatchers(HttpMethod.POST,"/delivery/auth/logout").permitAll() // /authentication/** 로 시작하는 요청은 인증 없이 허용 (로그인/회원가입 등)
+                        .requestMatchers(HttpMethod.POST,"/delivery/auth/token/reissue").permitAll()
 
                         // 💡 오직 점주만 접근 가능한 API
                         .requestMatchers("/delivery/stores/**", "/delivery/store/**").hasRole("OWNER")
 
                         .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
-                )
-                .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService, redisTemplate),
-                        UsernamePasswordAuthenticationFilter.class
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint) // 로그인x 일 경우 발동
