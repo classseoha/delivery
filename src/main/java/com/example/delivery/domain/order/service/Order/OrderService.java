@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -37,12 +38,21 @@ public class OrderService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
 
+        LocalTime now = LocalTime.now();
+        LocalTime openingTime = cart.getStore().getOpeningTime();
+        LocalTime closingTime = cart.getStore().getClosingTime();
+
+
         if (!cart.getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.NO_PERMISSION);
         }
 
         if (orderRepository.existsByCart(cart)) {
             throw new CustomException(ErrorCode.ALREADY_ORDERED);
+        }
+
+        if (now.isBefore(openingTime) || now.isAfter(closingTime)) {
+            throw new CustomException(ErrorCode.STORE_NOT_OPEN);
         }
 
         Order order = new Order(user, cart);
@@ -75,54 +85,5 @@ public class OrderService {
 
         List<CartItem> cartItems = cartItemRepository.findByCart(order.getCart());
         return OrderDetailResponseDto.from(order, cartItems);
-    }
-
-    // 주문 상태 변경: 가게 주인만 주문 상태를 변경 가능
-    @Transactional
-    public void changeOrderStatus(Long userId, Long orderId, Long storeId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
-
-        Long orderStoreId = order.getCart().getStore().getId();
-        if (!orderStoreId.equals(storeId)) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
-
-        // 주문 상태 변경
-        switch (order.getOrderStatus()) {
-            case REQUESTED:
-                order.changeOrderStatus(OrderStatus.ACCEPTED);
-                break;
-            case ACCEPTED:
-                order.changeOrderStatus(OrderStatus.DELIVERING);
-                break;
-            case DELIVERING:
-                order.changeOrderStatus(OrderStatus.DELIVERED);
-                break;
-            case DELIVERED:
-            case REJECTED:
-                throw new CustomException(ErrorCode.INVALID_ORDER_STATUS);
-            default:
-                throw new CustomException(ErrorCode.INVALID_ORDER_STATUS);
-        }
-    }
-
-    // 주문 거절: 가게 주인만 주문을 거절 가능
-    @Transactional
-    public void rejectOrder(Long userId, Long orderId, Long storeId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
-
-        Long orderStoreId = order.getCart().getStore().getId();
-        if (!orderStoreId.equals(storeId)) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
-
-        // 주문 상태가 REQUESTED일 때만 거절 가능
-        if (order.getOrderStatus() != OrderStatus.REQUESTED) {
-            throw new CustomException(ErrorCode.ORDER_CANNOT_BE_REJECTED);
-        }
-
-        order.changeOrderStatus(OrderStatus.REJECTED);
     }
 }
