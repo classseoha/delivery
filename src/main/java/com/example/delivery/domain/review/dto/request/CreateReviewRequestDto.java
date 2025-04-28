@@ -1,6 +1,8 @@
 package com.example.delivery.domain.review.dto.request;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -16,7 +18,11 @@ public class CreateReviewRequestDto {
 
     private final String content;
 
-    public CreateReviewRequestDto(Long storeId, Integer rating, String content) {
+    @JsonCreator
+    public CreateReviewRequestDto(
+            @JsonProperty("storeId")Long storeId,
+            @JsonProperty("rating")Integer rating,
+            @JsonProperty("content")String content) {
         this.storeId = storeId;
         this.rating = rating;
         this.content = content;

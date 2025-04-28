@@ -1,5 +1,7 @@
 package com.example.delivery.domain.store.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,7 +24,12 @@ public class UpdateRequestDto {
     private final Long minAmount;
 
 
-    public UpdateRequestDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus) {
+    @JsonCreator
+    public UpdateRequestDto(
+            @JsonProperty("storeName")String storeName,
+            @JsonProperty("openingTime")LocalTime openingTime,
+            @JsonProperty("closingTime")LocalTime closingTime,
+            @JsonProperty("minAmount")Long minAmount) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
