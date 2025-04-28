@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -49,16 +50,43 @@ class CartServiceTest {
         // Arrange
         Long userId = 1L;
         Long storeId = 2L;
-        CartItemRequestDto requestDto1 = new CartItemRequestDto(1L, 2); // 첫 번째 메뉴
-        CartItemRequestDto requestDto2 = new CartItemRequestDto(2L, 3); // 두 번째 메뉴
-        CartItemRequestDto requestDto3 = new CartItemRequestDto(1L, -1); // 세 번째 메뉴
+        CartItemRequestDto requestDto1 = new CartItemRequestDto(); // 첫 번째 메뉴
+        CartItemRequestDto requestDto2 = new CartItemRequestDto(); // 두 번째 메뉴
+        CartItemRequestDto requestDto3 = new CartItemRequestDto(); // 세 번째 메뉴
 
-        User user = new User(userId, "testuser");  // mock user
-        Store store = new Store(storeId, "teststore"); // mock store
+        ReflectionTestUtils.setField(requestDto1, "menuId", 1L);
+        ReflectionTestUtils.setField(requestDto1, "quantity", 2);
 
-        Menu menu1 = new Menu(1L, "testmenu1", 1000); // mock 첫 번째 메뉴
-        Menu menu2 = new Menu(2L, "testmenu2", 1500); // mock 두 번째 메뉴
-        Menu menu3 = new Menu(1L, "testmenu1", 1000); // mock 세 번째 메뉴
+        ReflectionTestUtils.setField(requestDto2, "menuId", 2L);
+        ReflectionTestUtils.setField(requestDto2, "quantity", 3);
+
+        ReflectionTestUtils.setField(requestDto3, "menuId", 1L);
+        ReflectionTestUtils.setField(requestDto3, "quantity", -1);
+
+
+        User user = new User();
+        ReflectionTestUtils.setField(user, "id", userId);
+        Store store = new Store();
+        ReflectionTestUtils.setField(store, "id", storeId);
+
+        Menu menu1 = new Menu(); // mock 첫 번째 메뉴
+        Menu menu2 = new Menu(); // mock 두 번째 메뉴
+        Menu menu3 = new Menu(); // mock 세 번째 메뉴
+
+        // mock 첫 번째 메뉴
+        ReflectionTestUtils.setField(menu1, "id", 1L);
+        ReflectionTestUtils.setField(menu1, "menuName", "testMenu1");
+        ReflectionTestUtils.setField(menu1, "price", 1000);
+
+        // mock 두 번째 메뉴
+        ReflectionTestUtils.setField(menu2, "id", 2L);
+        ReflectionTestUtils.setField(menu2, "menuName", "testMenu2");
+        ReflectionTestUtils.setField(menu2, "price", 1500);
+
+        // mock 세 번째 메뉴
+        ReflectionTestUtils.setField(menu3, "id", 1L);
+        ReflectionTestUtils.setField(menu3, "menuName", "testMenu1");
+        ReflectionTestUtils.setField(menu3, "price", 1000);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(storeRepository.findById(storeId)).thenReturn(Optional.of(store));

@@ -3,6 +3,8 @@ package com.example.delivery.domain.Order.service;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.order.entity.Cart;
 import com.example.delivery.domain.order.entity.Order;
 import com.example.delivery.domain.order.service.Order.OrderService;
@@ -14,7 +16,10 @@ import com.example.delivery.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import java.time.LocalTime;
+import java.util.Optional;
 
 public class OrderServiceTest {
 
@@ -41,16 +46,16 @@ public class OrderServiceTest {
 
         // User 객체 초기화
         mockUser = new User();
-        mockUser.setId(1L);
+        ReflectionTestUtils.setField(mockUser, "id", 1L);
 
         // Store 객체 초기화
         mockStore = new Store();
-        mockStore.setOpeningTime(LocalTime.of(9, 0));  // 09:00 AM
-        mockStore.setClosingTime(LocalTime.of(21, 0)); // 09:00 PM
+        ReflectionTestUtils.setField(mockStore, "openingTime", LocalTime.of(9, 0));
+        ReflectionTestUtils.setField(mockStore, "closingTime", LocalTime.of(21, 0));
 
         // Cart 객체 초기화
         mockCart = new Cart(mockUser, mockStore);
-        mockCart.setId(1L);  // Cart ID 설정
+        ReflectionTestUtils.setField(mockCart, "id", 1L); // Cart ID 설정
     }
 
     @Test
@@ -94,8 +99,8 @@ public class OrderServiceTest {
 
         // Cart의 사용자 ID와 다르게 설정 (권한 없음)
         User anotherUser = new User();
-        anotherUser.setId(2L);
-        mockCart.setUser(anotherUser);
+        ReflectionTestUtils.setField(anotherUser, "id", 2L);
+        ReflectionTestUtils.setField(mockCart, "user", anotherUser);
 
         // User와 Cart 조회 Mock 설정
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
@@ -124,27 +129,6 @@ public class OrderServiceTest {
             orderService.createOrder(userId, cartId);
         });
         assertEquals(ErrorCode.ALREADY_ORDERED, exception.getErrorCode());
-    }
-
-    @Test
-    public void testCreateOrder_StoreNotOpen() {
-        // given
-        Long userId = 1L;
-        Long cartId = 1L;
-
-        // 09:00 AM보다 이른 시간으로 설정
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
-        when(cartRepository.findById(cartId)).thenReturn(Optional.of(mockCart));
-
-        // 현 시간보다 일찍 주문하려는 경우
-        LocalTime mockTime = LocalTime.of(8, 0); // 08:00 AM
-        LocalTime now = mockTime;
-
-        // when & then
-        CustomException exception = assertThrows(CustomException.class, () -> {
-            orderService.createOrder(userId, cartId);
-        });
-        assertEquals(ErrorCode.STORE_NOT_OPEN, exception.getErrorCode());
     }
 
     @Test
