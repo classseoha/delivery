@@ -1,5 +1,7 @@
 package com.example.delivery.domain.authentication.filter;
 
+import com.example.delivery.common.exception.base.CustomException;
+import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.authentication.JwtAuthenticationException;
 import com.example.delivery.domain.authentication.JwtTokenProvider;
 import com.example.delivery.domain.authentication.service.CustomUserDetailsService;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,34 +49,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
 
         String token = jwtTokenProvider.resolveToken(request); // 헤더에서 Bearer <토큰> 형식의 문자열에서 토큰만 꺼내는 함수
 
+        try {
         // 토큰이 null이거나 이상한 형식이면 그냥 다음 필터로 넘김
         if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 로그아웃된 토큰인지 확인
-        if (redisTemplate.hasKey(token)) {
-            throw new JwtAuthenticationException("로그아웃 된 토큰입니다.");
+            // 로그아웃된 토큰인지 확인
+            if (redisTemplate.hasKey(token)) {
+                throw new JwtAuthenticationException("로그아웃 된 토큰입니다.");
+            }
+
+            // 유효성 검사 (토큰 만료 포함)
+            if (!jwtTokenProvider.validateToken(token)) {
+                throw new JwtAuthenticationException("유효하지 않은 토큰입니다.");
+            }
+
+            // 토큰에서 이메일로 유저 정보를 찾아서 Authentication 객체를 생성 (서명 검증, 만료 체크 등 토큰이 올바른지 검사)
+            Long userId = jwtTokenProvider.getUserId(token); // 토큰에서 id 꺼냄
+            UserDetails userDetails = ((CustomUserDetailsService) userDetailsService).loadUserById(userId); // id로 UserDetails 가져옴
+
+            // Security 인증 객체 생성 (비번은 null, 권한은 그대로 >> Spring Security에게 이 요청은 이 유저가 한거야 라고 알려주는 부분)
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+            // SecurityContext에 인증 정보 등록 (이제 이 요청은 인증된 사용자의 요청으로 간주)
+            // 이걸 등록하지 않으면 컨트롤러에서 @AuthenticationPrincipal 같은 걸로 유저 정보 못 씀
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // 다음 필터로 넘기기 (인증을 마치고 나면 필터 체인을 다음으로 넘김)
+            filterChain.doFilter(request, response);
+        } catch (JwtAuthenticationException e) {
+            // 여기서 잡고!
+            request.setAttribute("exception", new CustomException(ErrorCode.UNAUTHORIZED, e.getMessage()));
+            throw new AuthenticationException("CustomException 발생") {};
         }
-
-        // 유효성 검사 (토큰 만료 포함)
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new JwtAuthenticationException("유효하지 않은 토큰입니다.");
-        }
-
-        // 토큰에서 이메일로 유저 정보를 찾아서 Authentication 객체를 생성 (서명 검증, 만료 체크 등 토큰이 올바른지 검사)
-        Long userId = jwtTokenProvider.getUserId(token); // 토큰에서 id 꺼냄
-        UserDetails userDetails = ((CustomUserDetailsService) userDetailsService).loadUserById(userId); // id로 UserDetails 가져옴
-
-        // Security 인증 객체 생성 (비번은 null, 권한은 그대로 >> Spring Security에게 이 요청은 이 유저가 한거야 라고 알려주는 부분)
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-        // SecurityContext에 인증 정보 등록 (이제 이 요청은 인증된 사용자의 요청으로 간주)
-        // 이걸 등록하지 않으면 컨트롤러에서 @AuthenticationPrincipal 같은 걸로 유저 정보 못 씀
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // 다음 필터로 넘기기 (인증을 마치고 나면 필터 체인을 다음으로 넘김)
-        filterChain.doFilter(request, response);
     }
 }
