@@ -1,4 +1,4 @@
-package com.example.delivery.domain.user.dto;
+package com.example.delivery.domain.user.dto.request;
 
 import com.example.delivery.domain.user.entity.UserAuthority;
 import com.fasterxml.jackson.annotation.JsonCreator;

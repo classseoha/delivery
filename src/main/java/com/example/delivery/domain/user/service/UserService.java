@@ -2,9 +2,9 @@ package com.example.delivery.domain.user.service;
 
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.common.exception.enums.ErrorCode;
-import com.example.delivery.domain.user.dto.SignUpRequestDto;
-import com.example.delivery.domain.user.dto.SignUpResponseDto;
-import com.example.delivery.domain.user.dto.UpdateUserRequestDto;
+import com.example.delivery.domain.user.dto.request.SignUpRequestDto;
+import com.example.delivery.domain.user.dto.response.SignUpResponseDto;
+import com.example.delivery.domain.user.dto.request.UpdateUserRequestDto;
 import com.example.delivery.domain.user.entity.User;
 import com.example.delivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

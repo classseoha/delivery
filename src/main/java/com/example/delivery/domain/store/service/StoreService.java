@@ -1,12 +1,11 @@
 package com.example.delivery.domain.store.service;
 
-import com.example.delivery.domain.store.dto.CreateResponseDto;
-import com.example.delivery.domain.store.dto.GetStoreResponseDto;
-import com.example.delivery.domain.store.dto.UpdateResponseDto;
+import com.example.delivery.domain.store.dto.response.CreateResponseDto;
+import com.example.delivery.domain.store.dto.response.GetStoreResponseDto;
+import com.example.delivery.domain.store.dto.response.UpdateResponseDto;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface StoreService {
 

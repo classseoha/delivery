@@ -1,31 +1,23 @@
-package com.example.delivery.domain.store.dto;
+package com.example.delivery.domain.store.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.example.delivery.domain.store.entity.StoreStatus;
 import lombok.Getter;
 
 import java.time.LocalTime;
 
 @Getter
-public class UpdateRequestDto {
-
-    @NotBlank
+public class UpdateResponseDto {
     private final String storeName;
-
-    @NotNull
     private final LocalTime openingTime;
-
-    @NotNull
     private final LocalTime closingTime;
-
-    @NotBlank
     private final Long minAmount;
+    private final StoreStatus storeStatus;
 
-
-    public UpdateRequestDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, String storeStatus) {
+    public UpdateResponseDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount, StoreStatus storeStatus) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.minAmount = minAmount;
+        this.storeStatus = storeStatus;
     }
 }

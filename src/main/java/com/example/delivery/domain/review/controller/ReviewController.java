@@ -4,8 +4,8 @@ package com.example.delivery.domain.review.controller;
 
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
-import com.example.delivery.domain.review.dto.CreateReviewRequestDto;
-import com.example.delivery.domain.review.dto.ReviewResponseDto;
+import com.example.delivery.domain.review.dto.request.CreateReviewRequestDto;
+import com.example.delivery.domain.review.dto.response.ReviewResponseDto;
 import com.example.delivery.domain.review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

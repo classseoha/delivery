@@ -2,10 +2,10 @@ package com.example.delivery.domain.user.controller;
 
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
-import com.example.delivery.domain.user.dto.DeleteUserRequestDto;
-import com.example.delivery.domain.user.dto.SignUpRequestDto;
-import com.example.delivery.domain.user.dto.SignUpResponseDto;
-import com.example.delivery.domain.user.dto.UpdateUserRequestDto;
+import com.example.delivery.domain.user.dto.request.DeleteUserRequestDto;
+import com.example.delivery.domain.user.dto.request.SignUpRequestDto;
+import com.example.delivery.domain.user.dto.response.SignUpResponseDto;
+import com.example.delivery.domain.user.dto.request.UpdateUserRequestDto;
 import com.example.delivery.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
