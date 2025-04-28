@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // OncePerRe
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
         String path = request.getRequestURI();
-        return path.equals("/authentication/login") || path.equals("/users/signup");
+        return path.equals("/delivery/auth/login") || path.equals("/delivery/users/signup") || path.equals("/delivery/auth/token/reissue");
     }
 
     // 필터의 핵심 로직: 요청이 들어올 때마다 토큰을 꺼내서 검증하고 유저 인증을 넣어줌
