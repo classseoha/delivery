@@ -17,29 +17,33 @@ public class StoreOrderService {
 
     private final OrderRepository orderRepository;
 
+    // 주문 상태 변경: 가게 주인만 주문 상태를 변경 가능
     public OrderStatusResponseDto changeOrderStatus(Long userId, Long orderId, Long storeId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         validateStorePermission(order, storeId);
 
-        // 상태 변경
+        // 주문 상태 변경
         OrderStatus updatedStatus = updateOrderStatus(order);
 
         return OrderStatusResponseDto.from(order.getId(), updatedStatus.name());
     }
 
+    // 주문 거절: 가게 주인만 주문을 거절 가능
     public OrderStatusResponseDto rejectOrder(Long userId, Long orderId, Long storeId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         validateStorePermission(order, storeId);
 
+        // 주문 상태가 REQUESTED일 때만 거절 가능
         if (order.getOrderStatus() != OrderStatus.REQUESTED) {
             throw new CustomException(ErrorCode.ORDER_CANNOT_BE_REJECTED);
         }
 
         order.changeOrderStatus(OrderStatus.REJECTED);
+
         return OrderStatusResponseDto.from(order.getId(), OrderStatus.REJECTED.name());
     }
 

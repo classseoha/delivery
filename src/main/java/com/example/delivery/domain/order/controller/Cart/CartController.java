@@ -9,6 +9,7 @@ import com.example.delivery.domain.order.dto.Response.Cart.CartsResponseDto;
 import com.example.delivery.domain.order.service.Cart.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +38,7 @@ public class CartController {
 
         List<CartsResponseDto> cartSummary = cartService.getMyCarts(userId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, cartSummary, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_CART_SUCCESS, cartSummary, httpServletRequest.getRequestURI()));
     }
 
     /**
@@ -58,7 +59,28 @@ public class CartController {
 
         CartDetailResponseDto cartDetail = cartService.getCartDetail(userId, cartId);
 
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_SUCCESS, cartDetail, httpServletRequest.getRequestURI()));
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_CART_SUCCESS, cartDetail, httpServletRequest.getRequestURI()));
+    }
+
+    /**
+     * 장바구니 생성 API
+     *
+     * @param storeId            가게 ID (장바구니를 생성할 가게)
+     * @param httpServletRequest HttpServletRequest (요청 URI 정보)
+     * @return 장바구니 생성 결과
+     * @throws CustomException USER_NOT_FOUND, STORE_NOT_FOUND, CART_ALREADY_EXISTS
+     */
+    @PostMapping("/cart/{storeId}")
+    public ResponseEntity<ApiResponseDto<Void>> createCart(
+            @PathVariable Long storeId,
+            HttpServletRequest httpServletRequest) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = Long.parseLong(auth.getName());
+
+        cartService.createCart(userId, storeId);
+
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_CART_SUCCESS, null, httpServletRequest.getRequestURI()));
     }
 
     /**

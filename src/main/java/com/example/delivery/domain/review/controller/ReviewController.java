@@ -1,14 +1,15 @@
-package com.example.delivery.domain.review.entity;
+package com.example.delivery.domain.review.controller;
 
 
-import com.example.delivery.common.exception.base.CustomException;
-import com.example.delivery.common.exception.enums.ErrorCode;
+
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
+import com.example.delivery.domain.review.dto.CreateReviewRequestDto;
+import com.example.delivery.domain.review.dto.ReviewResponseDto;
+import com.example.delivery.domain.review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,26 +24,22 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/orders/{orderId}/reviews")
+    @PostMapping("/orders/reviews")
     public ResponseEntity<ApiResponseDto<Long>> createReview(
-            @PathVariable Long orderId,
+            @RequestParam Long orderId,
             @RequestBody @Valid CreateReviewRequestDto requestDto,
             HttpServletRequest request
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(authentication.getName());
-        // URL에 입력된 orderId 값과 requestDto orderId 값 비교
-        if(!orderId.equals(requestDto.getOrderId())){
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-        }
 
-        Long reviewId = reviewService.createReview(requestDto);
+        Long reviewId = reviewService.createReview(orderId,requestDto);
 
         return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CREATE_REVIEW,reviewId,request.getRequestURI()));
     }
 
 
-    @GetMapping("/stores/{storeId}/reviews")
+    @GetMapping("/{storeId}/reviews")
     public ResponseEntity<ApiResponseDto<List<ReviewResponseDto>>> getReviews(
             @PathVariable Long storeId, // URL 경로에서 가게 ID 추출
             @RequestParam(defaultValue = "1") Integer minRating, // 쿼리 파라미터 - 최소 평점

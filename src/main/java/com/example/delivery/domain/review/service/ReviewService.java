@@ -1,14 +1,18 @@
-package com.example.delivery.domain.review.entity;
+package com.example.delivery.domain.review.service;
 
 
-import ch.qos.logback.core.spi.ErrorCodes;
 import com.example.delivery.common.exception.base.CustomException;
 import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.domain.order.entity.Order;
-import com.example.delivery.domain.order.entity.OrderRepository;
 import com.example.delivery.domain.order.entity.OrderStatus;
+import com.example.delivery.domain.order.repository.OrderRepository;
+import com.example.delivery.domain.review.repository.ReviewRepository;
+import com.example.delivery.domain.review.dto.CreateReviewRequestDto;
+import com.example.delivery.domain.review.dto.ReviewResponseDto;
+import com.example.delivery.domain.review.entity.Review;
 import com.example.delivery.domain.store.entity.Store;
-import com.example.delivery.domain.store.entity.StoreRepository;
+import com.example.delivery.domain.store.repository.StoreRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,31 +26,29 @@ public class ReviewService {
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
 
-    public Long createReview(CreateReviewRequestDto requestDto) {
+    @Transactional
+    public Long createReview(Long orderId, CreateReviewRequestDto requestDto) {
 
         // 1. 주문조회
-        Order order = orderRepository.findByIdOrElseThrow(requestDto.getOrderId());
+        Order order = orderRepository.findByIdOrElseThrow(orderId);
 
         // 2. 가게조회
         Store store = storeRepository.findByIdOrElseThrow(requestDto.getStoreId());
 
-        // 3. 리뷰 작성 권한 확인
-        if (!order.getUser().getId().equals(requestDto.getUserId())) {
-            throw new CustomException(ErrorCode.NO_PERMISSION);
-
-        }
-        // 4. 배달 상태 확인
+        // 3. 배달 상태 확인
         if (!order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
             throw new CustomException(ErrorCode.REVIEW_NOT_ALLOWED);
         }
-        // 5. 리뷰 생성
+        // 4. 리뷰 생성
         Review review = Review.create(order, order.getUser(), store, requestDto.getRating(), requestDto.getContent());
-        // 6. 레포지토리에 저장
+        // 5. 레포지토리에 저장
         reviewRepository.save(review);
-        // 7. reviewId 반환
+        // 6. reviewId 반환
         return review.getId();
     }
 
+
+    @Transactional
     public List<ReviewResponseDto> getReviews(Long storeId, Integer minRating, Integer maxRating) {
         return reviewRepository.findByStoreIdAndRatingBetweenOrderByCreatedAtDesc(storeId, minRating, maxRating)
                 .stream() // List<Review> → Stream<Review>

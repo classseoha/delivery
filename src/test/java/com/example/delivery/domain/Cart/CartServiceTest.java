@@ -1,4 +1,4 @@
-package com.example.delivery.Cart;
+package com.example.delivery.domain.Cart;
 
 import com.example.delivery.domain.menu.entity.Menu;
 import com.example.delivery.domain.menu.repository.MenuRepository;
