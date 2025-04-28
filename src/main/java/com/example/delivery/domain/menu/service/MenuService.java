@@ -109,7 +109,7 @@ public class MenuService {
     }
 
     @Transactional
-    public void delete(Long userId, Long menuId) {
+    public void changeStatusMenu(Long userId, Long menuId) {
 
         Menu menu = menuRepository.findById(menuId)
                             .orElseThrow(()-> new NotFoundException(ErrorCode.MENU_NOT_FOUND));

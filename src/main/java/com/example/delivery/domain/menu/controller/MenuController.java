@@ -73,9 +73,9 @@ public class MenuController {
 
     // DeleteMapping과 PutMapping 사이의 차이.
     // DeleteMapping이 좀 더 RESTful 하다는 의견.
-    @DeleteMapping("/store/stop/menus/{menuId}")
+    @PatchMapping("/store/menus/{menuId}/status")
     public ResponseEntity<ApiResponseDto<MenuStatus>>
-                    stopMenu(@PathVariable Long menuId, HttpServletRequest request){
+                    changeStatusMenu(@PathVariable Long menuId, HttpServletRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(authentication.getName());
@@ -83,8 +83,8 @@ public class MenuController {
         System.out.println(userId);
 
 
-        menuService.delete(userId, menuId);
-        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.GET_MENU_SUCCESS, null, request.getRequestURI()));
+        menuService.changeStatusMenu(userId, menuId);
+        return ResponseEntity.ok(ApiResponseDto.success(SuccessCode.CHANGE_MENU_SUCCESS, null, request.getRequestURI()));
 
     }
 
