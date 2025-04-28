@@ -50,11 +50,19 @@ public class ReviewService {
 
     @Transactional
     public List<ReviewResponseDto> getReviews(Long storeId, Integer minRating, Integer maxRating) {
-        return reviewRepository.findByStoreIdAndRatingBetweenOrderByCreatedAtDesc(storeId, minRating, maxRating)
+
+        if (minRating > maxRating) {
+            throw new CustomException(ErrorCode.INVALID_RATING_RANGE);
+        }
+
+        List<ReviewResponseDto> reviews = reviewRepository.findByStoreIdAndRatingBetweenOrderByCreatedAtDesc(storeId, minRating, maxRating)
                 .stream() // List<Review> → Stream<Review>
                 .map(ReviewResponseDto::from) // 각 Review 객체를 ReviewResponseDto로 변환
                 .toList(); // 다시 List로 수집
+
+        if (reviews.isEmpty()) {
+            throw new CustomException(ErrorCode.NO_CONTENT);
+        }
+        return reviews;
     }
-
-
 }

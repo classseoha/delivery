@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    //204
+    NO_CONTENT(204,HttpStatus.NO_CONTENT,"조회된 리뷰가 없습니다"),
     // 400 - 잘못된 요청
     BAD_REQUEST(400,HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MISSING_PARAMETER(400,HttpStatus.BAD_REQUEST, "필수 파라미터가 누락되었습니다."),
@@ -19,7 +21,7 @@ public enum ErrorCode {
     INVALID_ORDER_STATUS(400, HttpStatus.BAD_REQUEST, "주문 상태를 변경 할수 없는 상태입니다."),
     REVIEW_NOT_ALLOWED(400, HttpStatus.BAD_REQUEST, "배달 완료된 주문만 리뷰 작성이 가능합니다."),
     STORE_NOT_OPEN(400, HttpStatus.BAD_REQUEST, "가게 오픈 시간에만 가능합니다."),
-
+    INVALID_RATING_RANGE(400,HttpStatus.BAD_REQUEST,"최소 평점은 최대 평점보다 클 수 없습니다."),
     // 401
     UNAUTHORIZED(401,HttpStatus.UNAUTHORIZED, "인증되지 않은 유저입니다."),
     USER_NOT_REGISTERED(401, HttpStatus.UNAUTHORIZED,  "회원가입을 완료한 후 로그인해주세요."),
