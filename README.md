@@ -79,15 +79,17 @@
 
 <br><br>
 
-## 📌 API 명세서
+## 와이어 프레임
+<img src="https://github.com/user-attachments/assets/1ce88ee9-62ec-433a-8f4b-5becfa35b93c" width="600px" height="700px">
 
+## 📌 API 명세서
 [17조 API 명세서](https://teamsparta.notion.site/API-1dd2dc3ef51480129d5eca387a385979)
 
 <br><br>
 
 ## 📌 [ERD](https://www.erdcloud.com/d/DGeK8xGTeu7rJ2Dd5)
 
-<img src="https://github.com/user-attachments/assets/32144ba5-9e63-470e-beab-bd3398210648">
+<img src="https://github.com/user-attachments/assets/32144ba5-9e63-470e-beab-bd3398210648" width="900px" height="400px">
 
 <br><br>
 
