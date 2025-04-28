@@ -1,4 +1,4 @@
-package com.example.delivery.domain.authentication.dto;
+package com.example.delivery.domain.authentication.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

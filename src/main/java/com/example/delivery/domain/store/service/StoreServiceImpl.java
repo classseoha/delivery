@@ -1,26 +1,21 @@
 package com.example.delivery.domain.store.service;
 
-import com.example.delivery.domain.store.dto.CreateResponseDto;
-import com.example.delivery.domain.store.dto.GetStoreResponseDto;
-import com.example.delivery.domain.store.dto.UpdateResponseDto;
+import com.example.delivery.domain.store.dto.response.CreateResponseDto;
+import com.example.delivery.domain.store.dto.response.GetStoreResponseDto;
+import com.example.delivery.domain.store.dto.response.UpdateResponseDto;
 import com.example.delivery.domain.store.entity.Store;
 import com.example.delivery.domain.store.repository.StoreRepository;
 import com.example.delivery.domain.user.entity.User;
-import com.example.delivery.domain.user.entity.UserAuthority;
 import com.example.delivery.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

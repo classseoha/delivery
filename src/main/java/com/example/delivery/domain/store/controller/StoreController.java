@@ -3,14 +3,15 @@ package com.example.delivery.domain.store.controller;
 
 import com.example.delivery.common.exception.enums.SuccessCode;
 import com.example.delivery.common.response.ApiResponseDto;
-import com.example.delivery.domain.store.dto.*;
+import com.example.delivery.domain.store.dto.request.CreateRequestDto;
+import com.example.delivery.domain.store.dto.request.UpdateRequestDto;
+import com.example.delivery.domain.store.dto.response.CreateResponseDto;
+import com.example.delivery.domain.store.dto.response.GetStoreResponseDto;
+import com.example.delivery.domain.store.dto.response.UpdateResponseDto;
 import com.example.delivery.domain.store.service.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/stores")
-    public ResponseEntity<ApiResponseDto<CreateResponseDto>> createStore( @RequestBody CreateRequestDto dto, HttpServletRequest request) {
+    public ResponseEntity<ApiResponseDto<CreateResponseDto>> createStore(@RequestBody CreateRequestDto dto, HttpServletRequest request) {
 
         CreateResponseDto response = storeService.createStore(dto.getStoreName()
                 , dto.getOpeningTime()
@@ -48,7 +49,7 @@ public class StoreController {
     }
 
     @PutMapping("/stores/{id}") //가게 수정
-    public ResponseEntity<ApiResponseDto<UpdateResponseDto>> updateStore(@PathVariable Long id, @RequestBody UpdateRequestDto dto,HttpServletRequest request) {
+    public ResponseEntity<ApiResponseDto<UpdateResponseDto>> updateStore(@PathVariable Long id, @RequestBody UpdateRequestDto dto, HttpServletRequest request) {
 
         UpdateResponseDto updateResponseDto = storeService.updateStore(id
                 , dto.getStoreName()
