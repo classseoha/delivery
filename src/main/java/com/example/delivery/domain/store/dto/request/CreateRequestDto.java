@@ -1,9 +1,14 @@
 package com.example.delivery.domain.store.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
@@ -16,16 +21,23 @@ public class CreateRequestDto {
     private final String storeName;
 
     @NotNull
+    @JsonFormat(pattern = "HH:mm")
     private final LocalTime openingTime;
 
     @NotNull
+    @JsonFormat(pattern = "HH:mm")
     private final LocalTime closingTime;
 
     @NotNull
     @Positive // 숫자 필드가 양수인지를 검사합니다.
     private final Long minAmount;
 
-    public CreateRequestDto(String storeName, LocalTime openingTime, LocalTime closingTime, Long minAmount) {
+    @JsonCreator
+    public CreateRequestDto(
+            @JsonProperty("storeName")String storeName,
+            @JsonProperty("openingTime")LocalTime openingTime,
+            @JsonProperty("closingTime")LocalTime closingTime,
+            @JsonProperty("minAmount")Long minAmount) {
         this.storeName = storeName;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
