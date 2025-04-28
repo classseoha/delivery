@@ -2,6 +2,7 @@ package com.example.delivery.common.response;
 
 import com.example.delivery.common.exception.enums.ErrorCode;
 import com.example.delivery.common.exception.enums.SuccessCode;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.annotation.Nullable;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
  */
 @Builder
 public record ApiResponseDto<T>(
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime timestamp,                       // 요청 시각
         int statusCode,                                // HTTP 상태 코드 숫자 (예: 400)
         @NonNull String message,                       // 응답 메시지
