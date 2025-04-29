@@ -48,19 +48,5 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
-
-//        // 인증 실패 시 ApiResponseDto 포맷으로 응답
-//        ApiResponseDto<Object> apiResponse = ApiResponseDto.fail(
-//                ErrorCode.UNAUTHORIZED,  // ErrorCode에 따라 변경 가능
-//                request.getRequestURI()  // 요청 경로 전달
-//        );
-//
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.setContentType("application/json");
-//        response.setCharacterEncoding("UTF-8");
-//
-//        // JSON으로 변환하여 응답
-//        String jsonResponse = objectMapper.writeValueAsString(apiResponse);
-//        response.getWriter().write(jsonResponse);
     }
 }
