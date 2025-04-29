@@ -54,7 +54,7 @@ public class JwtTokenProvider {
                 .compact(); // JWT 문자열로 변환 (subject >> 토큰이 어떤 유저에 대한 것인지 식별하는 값)
     }
 
-    // 토큰에서 사용자 이메일 추출 (Payload의 sub 값)
+    // 토큰에서 사용자 id값 추출 (Payload의 sub 값)
     public Long getUserId(String token) {
 
         String subject = Jwts.parser()
